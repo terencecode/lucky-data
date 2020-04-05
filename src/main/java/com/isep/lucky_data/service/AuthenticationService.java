@@ -2,12 +2,14 @@ package com.isep.lucky_data.service;
 
 import com.isep.lucky_data.configuration.JwtTokenProvider;
 import com.isep.lucky_data.exception.AppException;
+import com.isep.lucky_data.model.Department;
 import com.isep.lucky_data.model.Role;
 import com.isep.lucky_data.model.RoleName;
 import com.isep.lucky_data.model.User;
 import com.isep.lucky_data.payload.request.LoginRequest;
 import com.isep.lucky_data.payload.request.SignUpRequest;
 import com.isep.lucky_data.payload.response.ApiResponse;
+import com.isep.lucky_data.repository.DepartmentRepository;
 import com.isep.lucky_data.repository.RoleRepository;
 import com.isep.lucky_data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class AuthenticationService {
     RoleRepository roleRepository;
 
     @Autowired
+    DepartmentRepository departmentRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -60,13 +65,16 @@ public class AuthenticationService {
 
     private long registerUser(SignUpRequest signUpRequest) {
 
-        User student = new User(signUpRequest.getFirstName(), signUpRequest.getLastName(),
-                signUpRequest.getEmail(), signUpRequest.getPassword());
+        Department requestDepartment = departmentRepository.findByName(signUpRequest.getDepartmentName()).orElseThrow(
+                () -> new AppException("Department " + signUpRequest.getDepartmentName() + " does not exists !"));
 
-        student.setPassword(passwordEncoder.encode(student.getPassword()));
+        User user = new User(signUpRequest.getFirstName(), signUpRequest.getLastName(),
+                signUpRequest.getEmail(), requestDepartment);
 
-        addRole(student, RoleName.ROLE_USER);
-        User result = userRepository.save(student);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        addRole(user, RoleName.fromName(signUpRequest.getRoleName()));
+        User result = userRepository.save(user);
         userRepository.flush();
         return result.getId();
     }

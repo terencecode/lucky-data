@@ -5,7 +5,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,12 +31,15 @@ public class User {
     @NotBlank
     private String email;
 
+    @Column(name = "password")
     @Size(max = 100)
+    @NotNull
+    @NotBlank
     private String password;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Departement departement;
+    private Department department;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -47,11 +49,11 @@ public class User {
 
     public User(){}
 
-    public User(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName, @Email @NotNull @NotBlank String email, @Size(max = 100) String password) {
+    public User(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName, @Email @NotNull @NotBlank String email, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.department = department;
     }
 
     public long getId() {
@@ -94,12 +96,12 @@ public class User {
         this.password = password;
     }
 
-    public Departement getDepartement() {
-        return departement;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartement(Departement departement) {
-        this.departement = departement;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public Set<Role> getRoles() {

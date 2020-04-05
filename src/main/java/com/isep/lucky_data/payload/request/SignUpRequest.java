@@ -1,5 +1,7 @@
 package com.isep.lucky_data.payload.request;
 
+import com.isep.lucky_data.model.RoleName;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,8 +21,14 @@ public class SignUpRequest {
     private String email;
 
     @NotBlank
-    @Size(min = 6, max = 20)
+    @Size(min = 6, max = 100)
     private String password;
+
+    @NotBlank
+    private String departmentName;
+
+    @NotBlank
+    private String roleName;
 
     public String getFirstName() {
         return firstName;
@@ -52,5 +60,21 @@ public class SignUpRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }
