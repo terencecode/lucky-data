@@ -1,5 +1,6 @@
 package com.isep.lucky_data.configuration;
 
+import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -16,9 +17,9 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .ignoredParameterTypes(UserPrincipal.class)
-                //.securitySchemes(Lists.newArrayList(apiKey()))
+                .securitySchemes(Lists.newArrayList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.equipeor.isepu.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.isep.lucky_data.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
