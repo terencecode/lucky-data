@@ -1,10 +1,10 @@
 package com.isep.lucky_data.converter;
 
-import com.isep.lucky_data.model.User;
+import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.payload.response.UserResponse;
 import com.isep.lucky_data.utils.converter.OneWayConverter;
 
-public class UserToUserResponseConverter extends OneWayConverter<UserResponse, User> {
+public class UserToUserResponseConverter extends OneWayConverter<UserResponse, ApplicationUser> {
     public UserToUserResponseConverter() {
         super(user -> {
             if (user == null) {

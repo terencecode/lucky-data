@@ -32,7 +32,7 @@ public class AuthenticationController {
         if (!response.getSuccess()) {
             return ResponseEntity.badRequest().body(response);
         }
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return ResponseEntity.created(location).body(new ApiResponse(true, "ApplicationUser registered successfully"));
     }
 
     @GetMapping("/{email}")

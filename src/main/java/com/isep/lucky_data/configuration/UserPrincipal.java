@@ -1,6 +1,6 @@
 package com.isep.lucky_data.configuration;
 
-import com.isep.lucky_data.model.User;
+import com.isep.lucky_data.model.ApplicationUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,17 +35,17 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
-                new SimpleGrantedAuthority(role.getName().name())
+    public static UserPrincipal create(ApplicationUser applicationUser) {
+        List<GrantedAuthority> authorities = applicationUser.getRoles().stream().map(role ->
+                new SimpleGrantedAuthority(role.getRole().getName())
         ).collect(Collectors.toList());
 
         return new UserPrincipal(
-                user.getId(),
-                user.getFirstName(),
-                user.getEmail(),
-                user.getEmail(),
-                user.getPassword(),
+                applicationUser.getId(),
+                applicationUser.getFirstName(),
+                applicationUser.getEmail(),
+                applicationUser.getEmail(),
+                applicationUser.getPassword(),
                 authorities
         );
     }

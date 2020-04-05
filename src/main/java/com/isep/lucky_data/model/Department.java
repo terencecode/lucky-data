@@ -20,7 +20,7 @@ public class Department {
     private String name;
 
     @OneToMany(mappedBy = "department")
-    private Set<User> users;
+    private Set<ApplicationUser> applicationUsers;
 
     @OneToMany(mappedBy = "department")
     private Set<DatasetConsultation> datasetConsultations;
@@ -31,9 +31,9 @@ public class Department {
         this.name = name;
     }
 
-    public Department(@NotNull @NotBlank String name, Set<User> users, Set<DatasetConsultation> datasetConsultations) {
+    public Department(@NotNull @NotBlank String name, Set<ApplicationUser> applicationUsers, Set<DatasetConsultation> datasetConsultations) {
         this.name = name;
-        this.users = users;
+        this.applicationUsers = applicationUsers;
         this.datasetConsultations = datasetConsultations;
     }
 
@@ -53,12 +53,12 @@ public class Department {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<ApplicationUser> getApplicationUsers() {
+        return applicationUsers;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setApplicationUsers(Set<ApplicationUser> applicationUsers) {
+        this.applicationUsers = applicationUsers;
     }
 
     public Set<DatasetConsultation> getDatasetConsultations() {

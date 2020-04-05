@@ -3,7 +3,7 @@ package com.isep.lucky_data.service;
 import com.isep.lucky_data.configuration.UserPrincipal;
 import com.isep.lucky_data.converter.UserToUserResponseConverter;
 import com.isep.lucky_data.exception.UserNotFoundException;
-import com.isep.lucky_data.model.User;
+import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.payload.request.UserRequest;
 import com.isep.lucky_data.payload.response.UserResponse;
 import com.isep.lucky_data.repository.UserRepository;
@@ -20,7 +20,7 @@ public class UserService {
 
     public UserResponse getCurrentUser(UserPrincipal userPrincipal) {
 
-        Optional<User> user = userRepository.findById(userPrincipal.getId());
+        Optional<ApplicationUser> user = userRepository.findById(userPrincipal.getId());
 
         if (user.isPresent()) {
             return new UserToUserResponseConverter().convertFromEntity(user.get());
@@ -28,19 +28,19 @@ public class UserService {
     }
 
     public void updateCurrentUser(UserRequest userRequest, UserPrincipal userPrincipal) {
-        Optional<User> user = userRepository.findById(userPrincipal.getId());
+        Optional<ApplicationUser> user = userRepository.findById(userPrincipal.getId());
 
         if (user.isPresent()) {
-            User updatedUser = user.get();
-            updateCurrentUser(userRequest, updatedUser);
-            userRepository.save(updatedUser);
+            ApplicationUser updatedApplicationUser = user.get();
+            updateCurrentUser(userRequest, updatedApplicationUser);
+            userRepository.save(updatedApplicationUser);
         } else throw new UserNotFoundException();
     }
 
-    private void updateCurrentUser(UserRequest userRequest, User user) {
-        user.setFirstName(userRequest.getFirstName() == null ? user.getFirstName() : userRequest.getFirstName());
-        user.setLastName(userRequest.getLastName() == null ? user.getLastName() : userRequest.getLastName());
-        user.setEmail(userRequest.getEmail() == null ? user.getEmail() : userRequest.getEmail());
-        user.setPassword(userRequest.getPassword() == null ? user.getPassword() : userRequest.getPassword());
+    private void updateCurrentUser(UserRequest userRequest, ApplicationUser applicationUser) {
+        applicationUser.setFirstName(userRequest.getFirstName() == null ? applicationUser.getFirstName() : userRequest.getFirstName());
+        applicationUser.setLastName(userRequest.getLastName() == null ? applicationUser.getLastName() : userRequest.getLastName());
+        applicationUser.setEmail(userRequest.getEmail() == null ? applicationUser.getEmail() : userRequest.getEmail());
+        applicationUser.setPassword(userRequest.getPassword() == null ? applicationUser.getPassword() : userRequest.getPassword());
     }
 }

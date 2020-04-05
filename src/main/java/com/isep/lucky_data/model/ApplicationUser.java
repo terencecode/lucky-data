@@ -9,11 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class User {
+public class ApplicationUser {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "first_name")
     @NotNull
@@ -47,20 +47,20 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(){}
+    public ApplicationUser(){}
 
-    public User(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName, @Email @NotNull @NotBlank String email, Department department) {
+    public ApplicationUser(@NotNull @NotBlank String firstName, @NotNull @NotBlank String lastName, @Email @NotNull @NotBlank String email, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.department = department;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

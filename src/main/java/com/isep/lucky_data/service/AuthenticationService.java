@@ -2,10 +2,10 @@ package com.isep.lucky_data.service;
 
 import com.isep.lucky_data.configuration.JwtTokenProvider;
 import com.isep.lucky_data.exception.AppException;
+import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.model.Department;
 import com.isep.lucky_data.model.Role;
 import com.isep.lucky_data.model.RoleName;
-import com.isep.lucky_data.model.User;
 import com.isep.lucky_data.payload.request.LoginRequest;
 import com.isep.lucky_data.payload.request.SignUpRequest;
 import com.isep.lucky_data.payload.response.ApiResponse;
@@ -60,7 +60,7 @@ public class AuthenticationService {
         location = (fromCurrentContextPath().path("/users/{id}")
                 .buildAndExpand(userId).toUri());
 
-        return new ApiResponse(true, "User registered successfully");
+        return new ApiResponse(true, "ApplicationUser registered successfully");
     }
 
     private long registerUser(SignUpRequest signUpRequest) {
@@ -68,23 +68,23 @@ public class AuthenticationService {
         Department requestDepartment = departmentRepository.findByName(signUpRequest.getDepartmentName()).orElseThrow(
                 () -> new AppException("Department " + signUpRequest.getDepartmentName() + " does not exists !"));
 
-        User user = new User(signUpRequest.getFirstName(), signUpRequest.getLastName(),
+        ApplicationUser applicationUser = new ApplicationUser(signUpRequest.getFirstName(), signUpRequest.getLastName(),
                 signUpRequest.getEmail(), requestDepartment);
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        applicationUser.setPassword(passwordEncoder.encode(applicationUser.getPassword()));
 
-        addRole(user, RoleName.fromName(signUpRequest.getRoleName()));
-        User result = userRepository.save(user);
+        addRole(applicationUser, RoleName.fromName(signUpRequest.getRoleName()));
+        ApplicationUser result = userRepository.save(applicationUser);
         userRepository.flush();
         return result.getId();
     }
 
-    private void addRole(User user, RoleName roleName) {
-        Role userRole = roleRepository.findByName(roleName)
+    private void addRole(ApplicationUser applicationUser, RoleName roleName) {
+        Role userRole = roleRepository.findByRole(roleName)
                 .orElseThrow(() -> new AppException("User Role not set."));
-        Set<Role> roles = user.getRoles();
+        Set<Role> roles = applicationUser.getRoles();
         roles.add(userRole);
-        user.setRoles(roles);
+        applicationUser.setRoles(roles);
     }
 
     public String authenticateUser(LoginRequest loginRequest) {

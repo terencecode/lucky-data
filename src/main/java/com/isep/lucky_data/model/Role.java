@@ -1,9 +1,9 @@
 package com.isep.lucky_data.model;
 
+import com.isep.lucky_data.model.converter.RoleNameConverter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -12,17 +12,17 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = RoleNameConverter.class)
     @NaturalId
-    @Column(length = 60, unique = true)
-    private RoleName name;
+    @Column(name = "role", nullable = false, unique = true)
+    private RoleName role;
 
     public Role() {
 
     }
 
-    public Role(RoleName name) {
-        this.name = name;
+    public Role(RoleName role) {
+        this.role = role;
     }
 
     public Long getId() {
@@ -33,11 +33,11 @@ public class Role {
         this.id = id;
     }
 
-    public RoleName getName() {
-        return name;
+    public RoleName getRole() {
+        return role;
     }
 
-    public void setName(RoleName name) {
-        this.name = name;
+    public void setRole(RoleName role) {
+        this.role = role;
     }
 }
