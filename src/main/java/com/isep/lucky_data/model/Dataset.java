@@ -33,10 +33,10 @@ public class Dataset {
     private Float longitude;
 
     @Column(name = "startDate")
-    private Integer startDate;
+    private Long startDate;
 
     @Column(name = "endDate")
-    private Integer endDate;
+    private Long endDate;
 
     @Column(name = "tag")
     private String tag;
@@ -48,22 +48,32 @@ public class Dataset {
 
     @Column(name = "downloads")
     @NotNull
-    private Integer downloads;
+    private Long downloads = 0L;
 
     @OneToMany(mappedBy = "dataset")
     private Set<DatasetConsultation> datasetConsultations;
 
     public Dataset() {}
 
-    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, @NotNull DatasetFile datasetFile, @NotNull Integer downloads) {
+    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, @NotNull DatasetFile datasetFile) {
         this.title = title;
         this.description = description;
         this.source = source;
         this.datasetFile = datasetFile;
-        this.downloads = downloads;
     }
 
-    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, Float latitude, Float longitude, Integer startDate, Integer endDate, String tag, @NotNull DatasetFile datasetFile, @NotNull @NotBlank Integer downloads, Set<DatasetConsultation> datasetConsultations) {
+    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag) {
+        this.title = title;
+        this.description = description;
+        this.source = source;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.tag = tag;
+    }
+
+    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag, @NotNull DatasetFile datasetFile) {
         this.title = title;
         this.description = description;
         this.source = source;
@@ -73,8 +83,6 @@ public class Dataset {
         this.endDate = endDate;
         this.tag = tag;
         this.datasetFile = datasetFile;
-        this.downloads = downloads;
-        this.datasetConsultations = datasetConsultations;
     }
 
     public Long getId() {
@@ -125,19 +133,19 @@ public class Dataset {
         this.longitude = longitude;
     }
 
-    public Integer getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Integer startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Integer getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Integer endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
@@ -157,11 +165,11 @@ public class Dataset {
         this.datasetFile = datasetFile;
     }
 
-    public Integer getDownloads() {
+    public Long getDownloads() {
         return downloads;
     }
 
-    public void setDownloads(Integer downloads) {
+    public void setDownloads(Long downloads) {
         this.downloads = downloads;
     }
 

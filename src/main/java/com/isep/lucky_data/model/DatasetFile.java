@@ -24,10 +24,10 @@ public class DatasetFile {
     private String type;
 
     @Lob
-    @Column(name="file")
+    @Column(name="data")
     @NotNull
     @NotEmpty
-    private byte[] file;
+    private byte[] data;
 
     @OneToOne(mappedBy = "datasetFile")
     @NotNull
@@ -35,10 +35,10 @@ public class DatasetFile {
 
     public DatasetFile(){}
 
-    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull @NotEmpty byte[] file, @NotNull Dataset dataset) {
+    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull @NotEmpty byte[] data, @NotNull Dataset dataset) {
         this.name = name;
         this.type = type;
-        this.file = file;
+        this.data = data;
         this.dataset = dataset;
     }
 
@@ -66,11 +66,11 @@ public class DatasetFile {
         this.type = type;
     }
 
-    public byte[] getFile() {
-        return file;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setFile(byte[] file) {
-        this.file = file;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }

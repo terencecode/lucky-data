@@ -1,7 +1,5 @@
 package com.isep.lucky_data.payload.request;
 
-import com.isep.lucky_data.model.RoleName;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

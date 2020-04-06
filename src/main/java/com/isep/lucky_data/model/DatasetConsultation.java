@@ -23,7 +23,7 @@ public class DatasetConsultation {
     @Column(name = "consultations")
     @NotNull
     @NotBlank
-    private Long consultations;
+    private Long consultations = 0L;
 
     public DatasetConsultation() {}
 
