@@ -18,12 +18,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserResponse getCurrentUser(UserPrincipal userPrincipal) {
+    public ApplicationUser getCurrentUser(UserPrincipal userPrincipal) {
 
         Optional<ApplicationUser> user = userRepository.findById(userPrincipal.getId());
 
         if (user.isPresent()) {
-            return new UserToUserResponseConverter().convertFromEntity(user.get());
+            return user.get();
         } else throw new UserNotFoundException();
     }
 

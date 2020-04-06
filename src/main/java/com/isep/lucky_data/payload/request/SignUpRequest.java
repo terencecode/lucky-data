@@ -6,15 +6,15 @@ import javax.validation.constraints.Size;
 
 public class SignUpRequest {
     @NotBlank
-    @Size(min = 4, max = 40)
+    @Size(min = 1, max = 100)
     private String firstName;
 
     @NotBlank
-    @Size(min = 3, max = 15)
+    @Size(min = 1, max = 100)
     private String lastName;
 
     @NotBlank
-    @Size(max = 40)
+    @Size(max = 150)
     @Email
     private String email;
 

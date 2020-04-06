@@ -13,8 +13,6 @@ public class UserRequest {
 
     private String password;
 
-    private String promo;
-
     public UserRequest() {
     }
 
@@ -48,13 +46,5 @@ public class UserRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPromo() {
-        return promo;
-    }
-
-    public void setPromo(String promo) {
-        this.promo = promo;
     }
 }

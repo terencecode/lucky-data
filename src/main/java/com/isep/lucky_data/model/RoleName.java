@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum RoleName {
-    ROLE_USER(0, "user"),
-    ROLE_DATA_EXPERT(1, "data_expert"),
-    ROLE_ADMIN(2, "admin");
+    ROLE_USER(0, "ROLE_USER"),
+    ROLE_DATA_EXPERT(1, "ROLE_DATA_EXPERT"),
+    ROLE_ADMIN(2, "ROLE_ADMIN");
 
     private static Map<String, RoleName> valuesByName;
     private final int role;
@@ -31,7 +31,10 @@ public enum RoleName {
 
         RoleName value = valuesByName.get(name);
         if (value == null) {
-            throw new IllegalArgumentException("The role name " + name + " is invalid");
+            value = valuesByName.get("ROLE_" + name.toUpperCase());
+            if (value == null) {
+                throw new IllegalArgumentException("The role name " + name + " is invalid");
+            }
         }
         return value;
     }

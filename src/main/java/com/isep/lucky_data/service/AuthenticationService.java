@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
@@ -52,7 +53,7 @@ public class AuthenticationService {
             return new ApiResponse(false, "Email Address already in use!");
         }
 
-        long userId;
+        Long userId;
 
         userId = registerUser(signUpRequest);
 
@@ -63,25 +64,32 @@ public class AuthenticationService {
         return new ApiResponse(true, "ApplicationUser registered successfully");
     }
 
-    private long registerUser(SignUpRequest signUpRequest) {
+    private Long registerUser(SignUpRequest signUpRequest) {
 
-        Department requestDepartment = departmentRepository.findByName(signUpRequest.getDepartmentName()).orElseThrow(
-                () -> new AppException("Department " + signUpRequest.getDepartmentName() + " does not exists !"));
+        Department requestDepartment = departmentRepository.findByName(signUpRequest.getDepartmentName()).orElse(
+                departmentRepository.save(new Department(signUpRequest.getDepartmentName())));
 
         ApplicationUser applicationUser = new ApplicationUser(signUpRequest.getFirstName(), signUpRequest.getLastName(),
                 signUpRequest.getEmail(), requestDepartment);
 
-        applicationUser.setPassword(passwordEncoder.encode(applicationUser.getPassword()));
+        applicationUser.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
         addRole(applicationUser, RoleName.fromName(signUpRequest.getRoleName()));
-        ApplicationUser result = userRepository.save(applicationUser);
+        ApplicationUser savedUser = userRepository.save(applicationUser);
+        Set<ApplicationUser> departmentUsers = requestDepartment.getApplicationUsers();
+        if(departmentUsers == null) {
+            departmentUsers = new HashSet<>();
+            departmentUsers.add(savedUser);
+            requestDepartment.setApplicationUsers(departmentUsers);
+        }
+        departmentRepository.save(requestDepartment);
         userRepository.flush();
-        return result.getId();
+        return savedUser.getId();
     }
 
     private void addRole(ApplicationUser applicationUser, RoleName roleName) {
         Role userRole = roleRepository.findByRole(roleName)
-                .orElseThrow(() -> new AppException("User Role not set."));
+                .orElse(roleRepository.save(new Role(roleName)));
         Set<Role> roles = applicationUser.getRoles();
         roles.add(userRole);
         applicationUser.setRoles(roles);
