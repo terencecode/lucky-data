@@ -1,10 +1,13 @@
 package com.isep.lucky_data.service;
 
 import com.isep.lucky_data.converter.DatasetRequestToDatasetConverter;
+import com.isep.lucky_data.converter.DatasetToDatasetResponseConverter;
+import com.isep.lucky_data.exception.DatasetNotFoundException;
 import com.isep.lucky_data.exception.FileStorageException;
 import com.isep.lucky_data.model.Dataset;
 import com.isep.lucky_data.model.DatasetFile;
 import com.isep.lucky_data.payload.request.DatasetRequest;
+import com.isep.lucky_data.payload.response.DatasetResponse;
 import com.isep.lucky_data.repository.DatasetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class DatasetService {
@@ -44,5 +48,17 @@ public class DatasetService {
     public DatasetFile getFile(Long datasetId) {
         return datasetRepository.findById(datasetId)
                 .orElseThrow(() -> new FileStorageException("File not found with id " + datasetId)).getDatasetFile();
+    }
+
+    public Dataset getDataset(Long datasetId) {
+        //TODO: initialize and/or increment the datasetConsultation
+        return datasetRepository.findById(datasetId).orElseThrow(
+                () -> new DatasetNotFoundException("The Dataset with id " + datasetId + " does not exists !"));
+
+    }
+
+    public List<Dataset> getAllDatasets() {
+        return datasetRepository.findAll();
+
     }
 }

@@ -29,6 +29,17 @@ public class DatasetResponse {
 
     private Long size;
 
+    public DatasetResponse(String title, String description, String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag) {
+        this.title = title;
+        this.description = description;
+        this.source = source;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.tag = tag;
+    }
+
     public DatasetResponse(String title, String description, String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag, String fileName, String fileDownloadUri, String contentType, Long size) {
         this.title = title;
         this.description = description;
