@@ -6,6 +6,8 @@ import com.isep.lucky_data.model.DatasetFile;
 import com.isep.lucky_data.payload.request.DatasetRequest;
 import com.isep.lucky_data.payload.response.DatasetResponse;
 import com.isep.lucky_data.service.DatasetService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,8 @@ public class DatasetController {
 
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @PostMapping("/upload")
-    public DatasetResponse uploadDataset(@RequestParam("file") MultipartFile file, DatasetRequest datasetRequest) {
+    @ApiOperation(value = "Adds a dataset" , authorizations = {@Authorization(value = "JWT")})
+    public DatasetResponse addDataset(@RequestParam("file") MultipartFile file, DatasetRequest datasetRequest) {
         Dataset dataset = datasetService.storeFile(file, datasetRequest);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -49,6 +52,7 @@ public class DatasetController {
 
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/download/{datasetId}")
+    @ApiOperation(value = "Download the dataset file" , authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<Resource> downloadDatasetFile(@PathVariable Long datasetId) {
         // Load file from database
         DatasetFile datasetFile = datasetService.getFile(datasetId);
@@ -61,6 +65,7 @@ public class DatasetController {
 
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/{datasetId}")
+    @ApiOperation(value = "Gets dataset info by id" , authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<DatasetResponse> getDatasetById(@PathVariable Long datasetId) {
         Dataset dataset = datasetService.getDataset(datasetId);
         DatasetToDatasetResponseConverter converter = new DatasetToDatasetResponseConverter();
@@ -70,6 +75,7 @@ public class DatasetController {
 
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/datasets")
+    @ApiOperation(value = "Gets all datasets infos" , authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<Collection<DatasetResponse>> getAllDatasets() {
         List<Dataset> datasets = datasetService.getAllDatasets();
         DatasetToDatasetResponseConverter converter = new DatasetToDatasetResponseConverter();
