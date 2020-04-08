@@ -9,6 +9,7 @@ import {JwtInterceptor} from "./interceptor/jwt.interceptor";
 import { LoginFormComponent } from './component/login-form/login-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { DatasetListComponent } from './component/dataset-list/dataset-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { DatasetListComponent } from './component/dataset-list/dataset-list.comp
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
