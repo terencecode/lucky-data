@@ -3,9 +3,11 @@ package com.isep.lucky_data.payload.response;
 public class JwtAuthenticationResponse {
     private String accessToken;
     private String tokenType = "Bearer";
+    private Long expiresAt;
 
-    public JwtAuthenticationResponse(String accessToken) {
+    public JwtAuthenticationResponse(String accessToken, Long expiresAt) {
         this.accessToken = accessToken;
+        this.expiresAt = expiresAt;
     }
 
     public String getAccessToken() {
@@ -22,5 +24,13 @@ public class JwtAuthenticationResponse {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public Long getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(Long expiresAt) {
+        this.expiresAt = expiresAt;
     }
 }

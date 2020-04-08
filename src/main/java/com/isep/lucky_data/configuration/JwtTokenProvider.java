@@ -20,12 +20,15 @@ public class JwtTokenProvider {
     @Value("${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 
+    private Long jwtExpirationDateInMs;
+
     public String generateToken(Authentication authentication) {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+        jwtExpirationDateInMs = now.getTime() + jwtExpirationInMs;
+        Date expiryDate = new Date(jwtExpirationDateInMs);
 
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
@@ -60,5 +63,13 @@ public class JwtTokenProvider {
             logger.error("JWT claims string is empty.");
         }
         return false;
+    }
+
+    public Long getJwtExpirationDateInMs() {
+        return jwtExpirationDateInMs;
+    }
+
+    public void setJwtExpirationDateInMs(Long jwtExpirationDateInMs) {
+        this.jwtExpirationDateInMs = jwtExpirationDateInMs;
     }
 }

@@ -1,5 +1,6 @@
 package com.isep.lucky_data.controller;
 
+import com.isep.lucky_data.configuration.JwtTokenProvider;
 import com.isep.lucky_data.payload.request.LoginRequest;
 import com.isep.lucky_data.payload.request.SignUpRequest;
 import com.isep.lucky_data.payload.response.ApiResponse;
@@ -22,9 +23,14 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    JwtTokenProvider tokenProvider;
+
     @PostMapping
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(new JwtAuthenticationResponse(authenticationService.authenticateUser(loginRequest)));
+        String token = authenticationService.authenticateUser(loginRequest);
+        JwtAuthenticationResponse response = new JwtAuthenticationResponse(token, tokenProvider.getJwtExpirationDateInMs());
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/user")
