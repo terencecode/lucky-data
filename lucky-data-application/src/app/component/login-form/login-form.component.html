@@ -1,18 +1,30 @@
-<form [formGroup]="form">
-  <fieldset>
-    <legend>Login</legend>
-    <div class="form-field">
-      <label>Email:</label>
-      <input name="email" formControlName="email">
-    </div>
-    <div class="form-field">
-      <label>Password:</label>
-      <input name="password" formControlName="password"
-             type="password">
-    </div>
-  </fieldset>
-  <div class="form-buttons">
-    <button class="button button-primary"
-            (click)="login()">Login</button>
-  </div>
-</form>
+<mat-toolbar class="tool-bar">
+  <span>Connexion</span>
+</mat-toolbar>
+<mat-card class="my-form">
+  <mat-card-content>
+    <form [formGroup]="form">
+      <div>
+        <mat-form-field class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="exemple@lcl.fr" name="email" formControlName="email" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="full-width">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput placeholder="Mot de passe" name="password" formControlName="password" required>
+        </mat-form-field>
+      </div>
+      <div class="reset">
+        <a routerLink="/mot-de-passe-oublie" class="forgot"><button mat-button>Mot de passe oublié?</button></a>
+      </div>
+      <div class="buttons">
+        <button type="submit" mat-raised-button (click)="login()" color="primary" class="connexion">Connexion</button>
+        <a routerLink="/inscription">
+          <button mat-raised-button color="primary" class="inscription">Inscription</button>
+        </a>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

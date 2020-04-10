@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../service/auth.service";
-import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../service/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -10,26 +10,24 @@ import {Router} from "@angular/router";
 })
 export class LoginFormComponent implements OnInit {
 
-  form:FormGroup;
+  form: FormGroup;
 
-  constructor(private fb:FormBuilder,
+  constructor(private fb: FormBuilder,
               private authService: AuthService,
               private router: Router) {
 
     this.form = this.fb.group({
-      email: ['',Validators.required],
-      password: ['',Validators.required]
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.required]
     });
   }
 
   login() {
-    const values = this.form.value;
-
-    if (values.email && values.password) {
-      this.authService.login(values.email, values.password)
+    if (this.form.valid) {
+      this.authService.login(this.form.value.email, this.form.value.password)
         .subscribe(
           () => {
-            console.log("User is logged in");
+            console.log('User is logged in');
             this.router.navigateByUrl('/datasets');
           }
         );
