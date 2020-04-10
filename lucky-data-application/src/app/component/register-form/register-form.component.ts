@@ -43,11 +43,13 @@ export class RegisterFormComponent implements OnInit {
       department: [null, Validators.required],
       email: ['', Validators.compose([
         Validators.required,
-        Validators.email
+        Validators.pattern('^[a-z0-9._%+-]+@lcl.fr$')
       ])],
       password: ['', Validators.compose([
-        Validators.minLength(6),
-        Validators.required
+        Validators.required,
+        Validators.pattern(/^(?=\D*\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/)
+        // 8 char + une maj + un chiffre + un special
+        // Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,30}')
       ])],
       passwordConfirm: ['', Validators.required],
       acceptTerms: [false, Validators.requiredTrue]
