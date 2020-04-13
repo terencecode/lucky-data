@@ -22,12 +22,11 @@ public class DatasetConsultation {
 
     @Column(name = "consultations")
     @NotNull
-    @NotBlank
     private Long consultations = 0L;
 
     public DatasetConsultation() {}
 
-    public DatasetConsultation(DatasetConsultationKey id, Department department, Dataset dataset, @NotNull @NotBlank Long consultations) {
+    public DatasetConsultation(DatasetConsultationKey id, Department department, Dataset dataset, @NotNull Long consultations) {
         this.id = id;
         this.department = department;
         this.dataset = dataset;

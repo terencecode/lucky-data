@@ -3,6 +3,7 @@ package com.isep.lucky_data.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -26,17 +27,30 @@ public class Dataset {
     @NotBlank
     private String source;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "uploaded_at")
+    @NotNull
+    private Date uploadedAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
+    @NotNull
+    private Date date;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_date")
+    private Date endDate;
+
     @Column(name = "latitude")
     private Float latitude;
 
     @Column(name = "longitude")
     private Float longitude;
 
-    @Column(name = "startDate")
-    private Long startDate;
-
-    @Column(name = "endDate")
-    private Long endDate;
 
     @Column(name = "tag")
     private String tag;
@@ -62,35 +76,21 @@ public class Dataset {
         this.datasetFile = datasetFile;
     }
 
-    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag) {
+    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, @NotNull Date uploadedAt, @NotNull Date date, Date startDate, Date endDate, Float latitude, Float longitude, String tag) {
         this.title = title;
         this.description = description;
         this.source = source;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.uploadedAt = uploadedAt;
+        this.date = date;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.tag = tag;
-    }
-
-    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag, @NotNull DatasetFile datasetFile) {
-        this.title = title;
-        this.description = description;
-        this.source = source;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.tag = tag;
-        this.datasetFile = datasetFile;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -117,6 +117,14 @@ public class Dataset {
         this.source = source;
     }
 
+    public Date getUploadedAt() {
+        return uploadedAt;
+    }
+
+    public void setUploadedAt(Date uploadedAt) {
+        this.uploadedAt = uploadedAt;
+    }
+
     public Float getLatitude() {
         return latitude;
     }
@@ -133,19 +141,27 @@ public class Dataset {
         this.longitude = longitude;
     }
 
-    public Long getStartDate() {
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Long startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Long getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

@@ -6,8 +6,7 @@ import com.isep.lucky_data.payload.request.SignUpRequest;
 import com.isep.lucky_data.payload.response.ApiResponse;
 import com.isep.lucky_data.payload.response.JwtAuthenticationResponse;
 import com.isep.lucky_data.service.AuthenticationService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +17,13 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/auth")
+@Api(tags = "Authentication API")
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
     JwtTokenProvider tokenProvider;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @PostMapping
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -44,7 +43,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<?> checkEmailAvailability (@RequestParam String email) {
+    public ResponseEntity<?> checkEmailAvailability(@RequestParam String email) {
         boolean available = authenticationService.checkEmailAvailability(email);
         return available ? ResponseEntity.ok().body(available) : new ResponseEntity<>(HttpStatus.CONFLICT);
     }

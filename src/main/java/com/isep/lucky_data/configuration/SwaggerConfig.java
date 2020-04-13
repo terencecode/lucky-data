@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -18,6 +19,9 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .ignoredParameterTypes(UserPrincipal.class)
                 .securitySchemes(Lists.newArrayList(apiKey()))
+                .tags(new Tag("Dataset API", "Endpoints to perform CRUD operations on datasets"))
+                .tags(new Tag("User API", "Endpoints to perform CRUD operations on users"))
+                .tags(new Tag("Authentication API", "Endpoints to login and register"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.isep.lucky_data.controller"))
                 .paths(PathSelectors.any())

@@ -1,58 +1,37 @@
 package com.isep.lucky_data.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(value = "Response", description = "This is the response returned")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DatasetResponse {
 
+    @ApiModelProperty(value = "The title of the dataset", example = "Air Pollution in Seoul", position = 1)
     private String title;
 
+    @ApiModelProperty(value = "The description of the dataset", example = "This dataset deals with air pollution measurement information in Seoul, South Korea.\n" +
+            "Seoul Metropolitan Government provides many public data, including air pollution information, through the...", position = 2)
     private String description;
 
+    @ApiModelProperty(value = "The source of the dataset", example = "Banque de France", position = 3)
     private String source;
 
-    private Float latitude;
-
-    private Float longitude;
-
-    private Long startDate;
-
-    private Long endDate;
-
+    @ApiModelProperty(value = "The tag associated to the dataset", example = "Prêt bancaire", position = 4)
     private String tag;
 
-    private String fileName;
-
-    private String fileDownloadUri;
-
-    private String ContentType;
-
-    private Long size;
-
-    public DatasetResponse(String title, String description, String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag) {
+    public DatasetResponse(String title, String description, String source) {
         this.title = title;
         this.description = description;
         this.source = source;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.tag = tag;
     }
 
-    public DatasetResponse(String title, String description, String source, Float latitude, Float longitude, Long startDate, Long endDate, String tag, String fileName, String fileDownloadUri, String contentType, Long size) {
+    public DatasetResponse(String title, String description, String source, String tag) {
         this.title = title;
         this.description = description;
         this.source = source;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.tag = tag;
-        this.fileName = fileName;
-        this.fileDownloadUri = fileDownloadUri;
-        ContentType = contentType;
-        this.size = size;
     }
 
     public String getTitle() {
@@ -79,75 +58,11 @@ public class DatasetResponse {
         this.source = source;
     }
 
-    public Float getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
-
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
-    }
-
-    public Long getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Long startDate) {
-        this.startDate = startDate;
-    }
-
-    public Long getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Long endDate) {
-        this.endDate = endDate;
-    }
-
     public String getTag() {
         return tag;
     }
 
     public void setTag(String tag) {
         this.tag = tag;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getFileDownloadUri() {
-        return fileDownloadUri;
-    }
-
-    public void setFileDownloadUri(String fileDownloadUri) {
-        this.fileDownloadUri = fileDownloadUri;
-    }
-
-    public String getContentType() {
-        return ContentType;
-    }
-
-    public void setContentType(String contentType) {
-        ContentType = contentType;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
     }
 }

@@ -1,13 +1,11 @@
 package com.isep.lucky_data.service;
 
 import com.isep.lucky_data.converter.DatasetRequestToDatasetConverter;
-import com.isep.lucky_data.converter.DatasetToDatasetResponseConverter;
 import com.isep.lucky_data.exception.DatasetNotFoundException;
 import com.isep.lucky_data.exception.FileStorageException;
-import com.isep.lucky_data.model.Dataset;
-import com.isep.lucky_data.model.DatasetFile;
+import com.isep.lucky_data.model.*;
 import com.isep.lucky_data.payload.request.DatasetRequest;
-import com.isep.lucky_data.payload.response.DatasetResponse;
+import com.isep.lucky_data.repository.DatasetConsultationRepository;
 import com.isep.lucky_data.repository.DatasetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,10 @@ public class DatasetService {
     @Autowired
     private DatasetRepository datasetRepository;
 
-    public Dataset storeFile(MultipartFile file, DatasetRequest datasetRequest) {
+    @Autowired
+    private DatasetConsultationRepository datasetConsultationRepository;
+
+    public Dataset storeFile(MultipartFile file, DatasetRequest datasetRequest, ApplicationUser user) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -35,11 +36,20 @@ public class DatasetService {
 
             DatasetRequestToDatasetConverter converter = new DatasetRequestToDatasetConverter();
             Dataset dataset = converter.convertFromEntity(datasetRequest);
-            DatasetFile datasetFile = new DatasetFile(fileName, file.getContentType(), file.getBytes(), dataset);
+            DatasetFile datasetFile = new DatasetFile(fileName, file.getContentType(), file.getBytes(), file.getSize(), dataset);
             dataset.setDatasetFile(datasetFile);
 
+            dataset = datasetRepository.save(dataset);
 
-            return datasetRepository.save(dataset);
+            Department userDepartment = user.getDepartment();
+
+            DatasetConsultation datasetConsultation = new DatasetConsultation(new DatasetConsultationKey(userDepartment.getId(), dataset.getId()), userDepartment, dataset, 0L);
+
+            datasetConsultationRepository.save(datasetConsultation);
+
+            //datasetRepository.flush();
+
+            return dataset;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }

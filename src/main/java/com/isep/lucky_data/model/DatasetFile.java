@@ -29,16 +29,21 @@ public class DatasetFile {
     @NotEmpty
     private byte[] data;
 
+    @Column(name = "size")
+    @NotNull
+    private Long size;
+
     @OneToOne(mappedBy = "datasetFile")
     @NotNull
     private Dataset dataset;
 
     public DatasetFile(){}
 
-    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull @NotEmpty byte[] data, @NotNull Dataset dataset) {
+    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull @NotEmpty byte[] data, @NotNull Long size, @NotNull Dataset dataset) {
         this.name = name;
         this.type = type;
         this.data = data;
+        this.size = size;
         this.dataset = dataset;
     }
 
@@ -72,5 +77,21 @@ public class DatasetFile {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
+    public Dataset getDataset() {
+        return dataset;
+    }
+
+    public void setDataset(Dataset dataset) {
+        this.dataset = dataset;
     }
 }
