@@ -22,22 +22,23 @@ export class RegisterFormComponent implements OnInit {
   ];
 
   form: FormGroup;
+  submitted = false;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private router: Router) {
 
     this.form = this.fb.group({
-      fistName: ['', Validators.compose([
+      firstName: ['', Validators.compose([
         Validators.minLength(2),
         Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ]*'),
+        Validators.pattern('[a-zA-Z ,.-]*'),
         Validators.required
       ])],
       lastName: ['', Validators.compose([
         Validators.minLength(2),
         Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ]*'),
+        Validators.pattern('[a-zA-Z ,.-]*'),
         Validators.required
       ])],
       department: [null, Validators.required],
@@ -48,15 +49,12 @@ export class RegisterFormComponent implements OnInit {
       password: ['', Validators.compose([
         Validators.required,
         Validators.pattern(/^(?=\D*\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/)
-        // 8 char + une maj + un chiffre + un special
-        // Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,30}')
       ])],
       passwordConfirm: ['', Validators.required],
       acceptTerms: [false, Validators.requiredTrue]
     }, {
       validator: [
-        this.MustMatch('password', 'passwordConfirm'),
-        this.CheckSelect('department')
+        this.MustMatch('password', 'passwordConfirm')
       ]
     });
   }
@@ -78,32 +76,17 @@ export class RegisterFormComponent implements OnInit {
     };
   }
 
-  CheckSelect(controlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-
-      if (control.errors && !control.errors.mustMatch) {
-        return;
-      }
-      if (!control.value) {
-        control.setErrors({ mustMatch: true });
-      } else {
-        control.setErrors(null);
-      }
-    };
-  }
-
   register() {
+    this.submitted = true;
     if (this.form.valid) {
-      return this.router.navigateByUrl('');
-      /*
-      this.authService.login(this.form.value.email, this.form.value.password)
+      this.authService.register(this.form.value.firstName, this.form.value.lastName, this.form.value.department,
+        this.form.value.email, this.form.value.password, 'ROLE_USER')
         .subscribe(
           () => {
-            console.log('User is logged in');
+            console.log('User is register');
             this.router.navigateByUrl('/datasets');
           }
-        );*/
+        );
     }
   }
 

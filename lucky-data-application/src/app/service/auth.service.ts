@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpRequest} from "@angular/common/http";
-import {shareReplay, tap} from "rxjs/operators";
-import * as moment from "moment";
-import {environment} from "../../environments/environment";
+import {HttpClient, HttpRequest} from '@angular/common/http';
+import {shareReplay, tap} from 'rxjs/operators';
+import * as moment from 'moment';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,24 +18,27 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http.post(environment.baseUrl + '/auth', {email, password})
       .pipe(tap(res => {
-          this.setSession(res)
-
+          this.setSession(res);
         }),
         shareReplay());
   }
 
-  register(email: string, password: string) {
-    return this.http.post<{ access_token: string }>(environment.baseUrl + '/register', {
+  register(firstName: string, lastName: string, departmentName: string, email: string, password: string, roleName: string) {
+    return this.http.put<{ access_token: string }>(environment.baseUrl + '/auth/user', {
+      departmentName,
       email,
-      password
+      firstName,
+      lastName,
+      password,
+      roleName
     }).pipe(tap(res => {
-      this.login(email, password)
+      this.login(email, password);
     }));
   }
 
   logout() {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("expiresAt");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('expiresAt');
   }
 
   public isLoggedIn() {
@@ -47,7 +50,7 @@ export class AuthService {
   }
 
   getExpiration() {
-    const expiration = localStorage.getItem("expiresAt");
+    const expiration = localStorage.getItem('expiresAt');
     const expiresAt = JSON.parse(expiration);
     return moment(expiresAt);
   }
@@ -63,8 +66,7 @@ export class AuthService {
 
   private setSession(authResult) {
     const expiresAt = moment().add(authResult.expiresAt, 'ms');
-
     localStorage.setItem('accessToken', authResult.accessToken);
-    localStorage.setItem("expiresAt", JSON.stringify(expiresAt.valueOf()));
+    localStorage.setItem('expiresAt', JSON.stringify(expiresAt.valueOf()));
   }
 }

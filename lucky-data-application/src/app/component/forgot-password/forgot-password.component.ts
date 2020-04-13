@@ -17,10 +17,13 @@ export class ForgotPasswordComponent implements OnInit {
               private router: Router) {
 
     this.form = this.fb.group({
-      email: ['', Validators.compose([Validators.required, Validators.email])]});
+      email: ['', Validators.compose(
+        [Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@lcl.fr$')]
+      )]});
   }
 
-  login() {
+  resetPassword() {
     if (this.form.valid) {
       // Mettre en place l'envoi de mail
       return this.router.navigateByUrl('');

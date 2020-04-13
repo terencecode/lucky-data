@@ -12,7 +12,7 @@ import { ForgotPasswordComponent } from './component/forgot-password/forgot-pass
 import {ReactiveFormsModule} from '@angular/forms';
 import { DatasetListComponent } from './component/dataset-list/dataset-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MyMaterialModule } from './material.module';
+import { MyMaterialModule } from './modules/material.module';
 
 
 @NgModule({
