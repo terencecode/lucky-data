@@ -33,18 +33,18 @@
 
       <mat-form-field class="full-width">
         <mat-label>Mot de passe</mat-label>
-        <input matInput [type]="hide ? 'text' : 'password'" placeholder="Minimum 8 caractères, 1 majuscule et 1 chiffre" name="password" formControlName="password" required>
+        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Minimum 8 caractères, 1 majuscule et 1 chiffre" name="password" formControlName="password" required>
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         <mat-error *ngIf="this.form.controls.password.errors" class="invalid">Le mot de passe doit comporter minimum 8 caractères, 1 majuscule et 1 chiffre</mat-error>
       </mat-form-field>
 
       <mat-form-field class="full-width check">
         <mat-label>Confirmation du mot de passe</mat-label>
-        <input matInput [type]="hide2 ? 'text' : 'password'" placeholder="Confirmation du mot de passe" name="passwordConfirm" formControlName="passwordConfirm" required>
+        <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Confirmation du mot de passe" name="passwordConfirm" formControlName="passwordConfirm" required>
         <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide passwordConfirm'" [attr.aria-pressed]="hide2">
-          <mat-icon>{{hide2 ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         <mat-error *ngIf="this.form.controls.passwordConfirm.errors">Les mots de passe sont différents</mat-error>
       </mat-form-field>

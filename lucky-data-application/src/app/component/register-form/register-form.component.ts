@@ -23,6 +23,8 @@ export class RegisterFormComponent implements OnInit {
 
   form: FormGroup;
   submitted = false;
+  hide = true;
+  hide2 = true;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
