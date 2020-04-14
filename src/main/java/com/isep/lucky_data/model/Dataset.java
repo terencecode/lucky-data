@@ -3,37 +3,39 @@ package com.isep.lucky_data.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 public class Dataset {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", unique = true)
+    @Column(name = "title", unique = true, nullable = false)
     @NotNull
     @NotBlank
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     @NotNull
+    @Size(max = 5000)
     private String description;
 
-    @Column(name = "source")
+    @Column(name = "source", nullable = false)
     @NotNull
     @NotBlank
     private String source;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "uploaded_at")
+    @Column(name = "uploaded_at", nullable = false)
     @NotNull
     private Date uploadedAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     @NotNull
     private Date date;
 
@@ -55,12 +57,7 @@ public class Dataset {
     @Column(name = "tag")
     private String tag;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "dataset_file_id", referencedColumnName = "id")
-    private DatasetFile datasetFile;
-
-    @Column(name = "downloads")
+    @Column(name = "downloads", nullable = false)
     @NotNull
     private Long downloads = 0L;
 
@@ -69,11 +66,10 @@ public class Dataset {
 
     public Dataset() {}
 
-    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, @NotNull DatasetFile datasetFile) {
+    public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source) {
         this.title = title;
         this.description = description;
         this.source = source;
-        this.datasetFile = datasetFile;
     }
 
     public Dataset(@NotNull @NotBlank String title, @NotNull String description, @NotNull @NotBlank String source, @NotNull Date uploadedAt, @NotNull Date date, Date startDate, Date endDate, Float latitude, Float longitude, String tag) {
@@ -171,14 +167,6 @@ public class Dataset {
 
     public void setTag(String tag) {
         this.tag = tag;
-    }
-
-    public DatasetFile getDatasetFile() {
-        return datasetFile;
-    }
-
-    public void setDatasetFile(DatasetFile datasetFile) {
-        this.datasetFile = datasetFile;
     }
 
     public Long getDownloads() {

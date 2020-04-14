@@ -1,7 +1,7 @@
 package com.isep.lucky_data.configuration;
 
 import com.isep.lucky_data.model.ApplicationUser;
-import com.isep.lucky_data.repository.UserRepository;
+import com.isep.lucky_data.repository.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    ApplicationUserRepository applicationUserRepository;
 
     @Override
     @Transactional
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throws UsernameNotFoundException {
         // Let people login with either username or email
         ApplicationUser applicationUser;
-        applicationUser = userRepository.findByEmail(email)
+        applicationUser = applicationUserRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("ApplicationUser not found with email : " + email)
                 );
@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserById(Long id) {
         ApplicationUser applicationUser;
-        applicationUser = userRepository.findById(id)
+        applicationUser = applicationUserRepository.findById(id)
                 .orElseThrow(
                         () -> new UsernameNotFoundException("ApplicationUser not found with id : " + id)
                 );

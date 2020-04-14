@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "Response", description = "This is the response returned")
+@ApiModel(description = "This is the response returned")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DatasetResponse {
 

@@ -7,10 +7,10 @@ import java.io.Serializable;
 @Embeddable
 public class DatasetConsultationKey implements Serializable {
 
-    @Column(name = "department_id")
+    @Column(name = "department_id", nullable = false)
     private Long departmentId;
 
-    @Column(name = "dataset_id")
+    @Column(name = "dataset_id", nullable = false)
     private Long datasetId;
 
     public DatasetConsultationKey() {}

@@ -33,7 +33,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         URI location = null;
         ApiResponse response = authenticationService.registerUser(signUpRequest, location);
         if (!response.getSuccess()) {

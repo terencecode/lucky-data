@@ -4,46 +4,44 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.sql.Blob;
 
 @Entity
 public class DatasetFile {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     @NotNull
     @NotBlank
     private String name;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     @NotNull
     @NotBlank
     private String type;
 
     @Lob
-    @Column(name="data")
+    @Column(name="data", nullable = false)
     @NotNull
-    @NotEmpty
-    private byte[] data;
+    @Basic(fetch = FetchType.LAZY)
+    private Blob data;
 
-    @Column(name = "size")
-    @NotNull
-    private Long size;
 
-    @OneToOne(mappedBy = "datasetFile")
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "dataset_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dataset_foreign_key"))
     @NotNull
     private Dataset dataset;
 
     public DatasetFile(){}
 
-    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull @NotEmpty byte[] data, @NotNull Long size, @NotNull Dataset dataset) {
+    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull Blob data, @NotNull Dataset dataset) {
         this.name = name;
         this.type = type;
         this.data = data;
-        this.size = size;
         this.dataset = dataset;
     }
 
@@ -71,20 +69,12 @@ public class DatasetFile {
         this.type = type;
     }
 
-    public byte[] getData() {
+    public Blob getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    public void setData(Blob data) {
         this.data = data;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
     }
 
     public Dataset getDataset() {

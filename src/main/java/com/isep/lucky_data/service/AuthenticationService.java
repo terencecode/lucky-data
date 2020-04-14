@@ -1,7 +1,6 @@
 package com.isep.lucky_data.service;
 
 import com.isep.lucky_data.configuration.JwtTokenProvider;
-import com.isep.lucky_data.exception.AppException;
 import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.model.Department;
 import com.isep.lucky_data.model.Role;
@@ -11,7 +10,7 @@ import com.isep.lucky_data.payload.request.SignUpRequest;
 import com.isep.lucky_data.payload.response.ApiResponse;
 import com.isep.lucky_data.repository.DepartmentRepository;
 import com.isep.lucky_data.repository.RoleRepository;
-import com.isep.lucky_data.repository.UserRepository;
+import com.isep.lucky_data.repository.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +32,7 @@ public class AuthenticationService {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    ApplicationUserRepository applicationUserRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -49,7 +48,7 @@ public class AuthenticationService {
 
     public ApiResponse registerUser(SignUpRequest signUpRequest, URI location) {
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if(applicationUserRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ApiResponse(false, "Email Address already in use!");
         }
 
@@ -75,7 +74,7 @@ public class AuthenticationService {
         applicationUser.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
         addRole(applicationUser, RoleName.fromName(signUpRequest.getRoleName()));
-        ApplicationUser savedUser = userRepository.save(applicationUser);
+        ApplicationUser savedUser = applicationUserRepository.save(applicationUser);
         Set<ApplicationUser> departmentUsers = requestDepartment.getApplicationUsers();
         if(departmentUsers == null) {
             departmentUsers = new HashSet<>();
@@ -83,7 +82,7 @@ public class AuthenticationService {
             requestDepartment.setApplicationUsers(departmentUsers);
         }
         departmentRepository.save(requestDepartment);
-        userRepository.flush();
+        applicationUserRepository.flush();
         return savedUser.getId();
     }
 
@@ -109,6 +108,6 @@ public class AuthenticationService {
     }
 
     public boolean checkEmailAvailability (String email) {
-        return !userRepository.findByEmail(email).isPresent();
+        return !applicationUserRepository.findByEmail(email).isPresent();
     }
 }

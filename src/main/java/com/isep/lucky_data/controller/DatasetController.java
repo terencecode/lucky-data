@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,14 +63,16 @@ public class DatasetController {
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/download/{datasetId}")
     @ApiOperation(value = "Download the dataset file", authorizations = {@Authorization(value = "JWT")})
-    public ResponseEntity<Resource> downloadDatasetFile(@PathVariable Long datasetId) {
+    public ResponseEntity<Resource> downloadDatasetFile(@PathVariable Long datasetId) throws SQLException {
         // Load file from database
         DatasetFile datasetFile = datasetService.getFile(datasetId);
+
+        Resource byteArrayResource = new ByteArrayResource(datasetFile.getData().getBytes(1L, (int) datasetFile.getData().length()));
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(datasetFile.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + datasetFile.getName() + "\"")
-                .body(new ByteArrayResource(datasetFile.getData()));
+                .body(byteArrayResource);
     }
 
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
@@ -79,6 +82,10 @@ public class DatasetController {
         Dataset dataset = datasetService.getDataset(datasetId);
         DatasetToDatasetDetailsResponseConverter converter = new DatasetToDatasetDetailsResponseConverter();
         DatasetDetailsResponse response = converter.convertFromEntity(dataset);
+        DatasetFile file = datasetService.getFile(datasetId);
+        /*response.setFileName(file.getName());
+        response.setContentType(file.getType());
+        response.setSize(file.getData().length());*/
         return ResponseEntity.ok(response);
     }
 

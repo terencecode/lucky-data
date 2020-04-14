@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 
-@ApiModel(value = "Request", description = "This is the request you should send")
+@ApiModel(description = "This is the request you should send")
 public class LoginRequest {
 
     @NotBlank

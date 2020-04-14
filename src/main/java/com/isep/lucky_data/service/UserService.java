@@ -1,12 +1,10 @@
 package com.isep.lucky_data.service;
 
 import com.isep.lucky_data.configuration.UserPrincipal;
-import com.isep.lucky_data.converter.UserToUserResponseConverter;
 import com.isep.lucky_data.exception.UserNotFoundException;
 import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.payload.request.UserRequest;
-import com.isep.lucky_data.payload.response.UserResponse;
-import com.isep.lucky_data.repository.UserRepository;
+import com.isep.lucky_data.repository.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +14,11 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private ApplicationUserRepository applicationUserRepository;
 
     public ApplicationUser getCurrentUser(UserPrincipal userPrincipal) {
 
-        Optional<ApplicationUser> user = userRepository.findById(userPrincipal.getId());
+        Optional<ApplicationUser> user = applicationUserRepository.findById(userPrincipal.getId());
 
         if (user.isPresent()) {
             return user.get();
@@ -28,12 +26,12 @@ public class UserService {
     }
 
     public void updateCurrentUser(UserRequest userRequest, UserPrincipal userPrincipal) {
-        Optional<ApplicationUser> user = userRepository.findById(userPrincipal.getId());
+        Optional<ApplicationUser> user = applicationUserRepository.findById(userPrincipal.getId());
 
         if (user.isPresent()) {
             ApplicationUser updatedApplicationUser = user.get();
             updateCurrentUser(userRequest, updatedApplicationUser);
-            userRepository.save(updatedApplicationUser);
+            applicationUserRepository.save(updatedApplicationUser);
         } else throw new UserNotFoundException();
     }
 

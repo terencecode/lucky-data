@@ -3,7 +3,7 @@ package com.isep.lucky_data.payload.response;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "Response", description = "This is the response returned")
+@ApiModel(description = "This is the response returned")
 public class JwtAuthenticationResponse {
 
     @ApiModelProperty(value = "The accessToken", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTg2ODA0ODU1LCJleHAiOjE1ODc0MDk2NTV9.hqUvc5rNPUieWRODdyUvshnPDJXo8sue8SCj3gDVNqw18nSQO7o9bco2Qx9V5FQo6eoW_Y1vcpIe6VPluljRBQ", required = true, position = 0)

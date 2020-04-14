@@ -10,11 +10,11 @@ import java.util.Set;
 public class Department {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     @NotNull
     @NotBlank
     private String name;

@@ -10,17 +10,17 @@ public class DatasetConsultation {
     @EmbeddedId
     private DatasetConsultationKey id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @MapsId("department_id")
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id", foreignKey = @ForeignKey(name = "department_foreign_key"))
     private Department department;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @MapsId("dataset_id")
-    @JoinColumn(name = "dataset_id")
+    @JoinColumn(name = "dataset_id", foreignKey = @ForeignKey(name = "dataset_foreign_key"))
     private Dataset dataset;
 
-    @Column(name = "consultations")
+    @Column(name = "consultations", nullable = false)
     @NotNull
     private Long consultations = 0L;
 

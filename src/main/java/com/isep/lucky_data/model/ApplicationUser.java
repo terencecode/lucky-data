@@ -11,40 +11,40 @@ import java.util.Set;
 @Entity
 public class ApplicationUser {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     @NotNull
     @NotBlank
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     @NotNull
     @NotBlank
     private String lastName;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     @Email
     @NotNull
     @NotBlank
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     @Size(max = 100)
     @NotNull
     @NotBlank
     private String password;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "department_foreign_key"))
     private Department department;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+            joinColumns = @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_foreign_key")),
+            inverseJoinColumns = @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "role_foreign_key")))
     private Set<Role> roles = new HashSet<>();
 
     public ApplicationUser(){}

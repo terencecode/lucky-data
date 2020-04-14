@@ -6,7 +6,9 @@ import com.isep.lucky_data.exception.FileStorageException;
 import com.isep.lucky_data.model.*;
 import com.isep.lucky_data.payload.request.DatasetRequest;
 import com.isep.lucky_data.repository.DatasetConsultationRepository;
+import com.isep.lucky_data.repository.DatasetFileRepository;
 import com.isep.lucky_data.repository.DatasetRepository;
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,6 +22,9 @@ public class DatasetService {
 
     @Autowired
     private DatasetRepository datasetRepository;
+
+    @Autowired
+    private DatasetFileRepository datasetFileRepository;
 
     @Autowired
     private DatasetConsultationRepository datasetConsultationRepository;
@@ -36,18 +41,15 @@ public class DatasetService {
 
             DatasetRequestToDatasetConverter converter = new DatasetRequestToDatasetConverter();
             Dataset dataset = converter.convertFromEntity(datasetRequest);
-            DatasetFile datasetFile = new DatasetFile(fileName, file.getContentType(), file.getBytes(), file.getSize(), dataset);
-            dataset.setDatasetFile(datasetFile);
-
             dataset = datasetRepository.save(dataset);
+            DatasetFile datasetFile = new DatasetFile(fileName, file.getContentType(), BlobProxy.generateProxy(file.getBytes()), dataset);
+            datasetFileRepository.save(datasetFile);
 
             Department userDepartment = user.getDepartment();
 
             DatasetConsultation datasetConsultation = new DatasetConsultation(new DatasetConsultationKey(userDepartment.getId(), dataset.getId()), userDepartment, dataset, 0L);
 
             datasetConsultationRepository.save(datasetConsultation);
-
-            //datasetRepository.flush();
 
             return dataset;
         } catch (IOException ex) {
@@ -56,8 +58,8 @@ public class DatasetService {
     }
 
     public DatasetFile getFile(Long datasetId) {
-        return datasetRepository.findById(datasetId)
-                .orElseThrow(() -> new FileStorageException("File not found with id " + datasetId)).getDatasetFile();
+        return datasetFileRepository.findByDataset(datasetRepository.findById(datasetId).orElseThrow(() -> new DatasetNotFoundException("The dataset with id " + datasetId + " does not exists")))
+                .orElseThrow(() -> new FileStorageException("File not found with id " + datasetId));
     }
 
     public Dataset getDataset(Long datasetId) {

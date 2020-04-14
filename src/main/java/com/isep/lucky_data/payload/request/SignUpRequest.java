@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@ApiModel(value = "Request", description = "This is the request you should send")
+@ApiModel(description = "This is the request you should send, the department is created if it doesn't exists")
 public class SignUpRequest {
 
     @NotBlank

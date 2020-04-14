@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "Response", description = "This is the response returned")
+@ApiModel(description = "This is the response returned")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DatasetDetailsResponse {
 
@@ -53,6 +53,21 @@ public class DatasetDetailsResponse {
 
     @ApiModelProperty(value = "The number of downloads of the dataset file", example = "321", required = true, position = 14)
     private Long downloads;
+
+    public DatasetDetailsResponse(Long id, String title, String description, String source, Long uploadedAt, Long date, Long startDate, Long endDate, Float latitude, Float longitude, String tag, Long downloads) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.source = source;
+        this.uploadedAt = uploadedAt;
+        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.tag = tag;
+        this.downloads = downloads;
+    }
 
     public DatasetDetailsResponse(Long id, String title, String description, String source, Long uploadedAt, Long date, Long startDate, Long endDate, Float latitude, Float longitude, String tag, String fileName, String contentType, Long size, Long downloads) {
         this.id = id;

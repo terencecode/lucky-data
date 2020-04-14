@@ -8,7 +8,7 @@
 		<version>2.1.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.equipeor</groupId>
+	<groupId>com.isep</groupId>
 	<artifactId>lucky-data</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>lucky-data</name>
@@ -67,6 +67,10 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 	</dependencies>
 
