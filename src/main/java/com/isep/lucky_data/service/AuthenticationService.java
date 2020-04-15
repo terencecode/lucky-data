@@ -65,8 +65,8 @@ public class AuthenticationService {
 
     private Long registerUser(SignUpRequest signUpRequest) {
 
-        Department requestDepartment = departmentRepository.findByName(signUpRequest.getDepartmentName()).orElse(
-                departmentRepository.save(new Department(signUpRequest.getDepartmentName())));
+        Department requestDepartment = departmentRepository.findByName(signUpRequest.getDepartmentName()).orElseGet(
+                () -> departmentRepository.save(new Department(signUpRequest.getDepartmentName())));
 
         ApplicationUser applicationUser = new ApplicationUser(signUpRequest.getFirstName(), signUpRequest.getLastName(),
                 signUpRequest.getEmail(), requestDepartment);
@@ -88,7 +88,7 @@ public class AuthenticationService {
 
     private void addRole(ApplicationUser applicationUser, RoleName roleName) {
         Role userRole = roleRepository.findByRole(roleName)
-                .orElse(roleRepository.save(new Role(roleName)));
+                .orElseGet(() -> roleRepository.save(new Role(roleName)));
         Set<Role> roles = applicationUser.getRoles();
         roles.add(userRole);
         applicationUser.setRoles(roles);
