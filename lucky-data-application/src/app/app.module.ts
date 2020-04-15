@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MyMaterialModule} from './modules/material.module';
 import { FooterComponent } from './component/footer/footer.component';
 import {ProfileComponent} from "./component/profile/profile.component";
+import { NavbarComponent } from './component/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {ProfileComponent} from "./component/profile/profile.component";
     RegisterFormComponent,
     ForgotPasswordComponent,
     FooterComponent,
-    ProfileComponent
+    ProfileComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

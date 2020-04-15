@@ -8,11 +8,12 @@ import {ProfileComponent} from "./component/profile/profile.component";
 
 
 const routes: Routes = [
-  { path: '', component: LoginFormComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full'},
+  { path: 'login', component: LoginFormComponent },
   { path: 'datasets', component: DatasetListComponent },
-  { path: 'inscription', component: RegisterFormComponent },
-  { path: 'mot-de-passe-oublie', component: ForgotPasswordComponent },
-  {path: 'mon-compte', component: ProfileComponent}
+  { path: 'register', component: RegisterFormComponent },
+  { path: 'password-forgotten', component: ForgotPasswordComponent },
+  {path: 'profile', component: ProfileComponent}
   ]
 ;
 
