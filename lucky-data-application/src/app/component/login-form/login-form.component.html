@@ -1,6 +1,3 @@
-<mat-toolbar class="tool-bar">
-  <span>Connexion</span>
-</mat-toolbar>
 <mat-card class="my-form">
   <mat-card-content>
     <form [formGroup]="form">
@@ -20,11 +17,11 @@
         </mat-form-field>
       </div>
       <div class="reset">
-        <a routerLink="/mot-de-passe-oublie" class="forgot"><button mat-button>Mot de passe oublié?</button></a>
+        <a routerLink="/forgotten-password" class="forgot"><button mat-button>Mot de passe oublié?</button></a>
       </div>
       <div class="buttons">
         <button type="submit" mat-raised-button (click)="login()" color="primary" class="connexion">Connexion</button>
-        <a routerLink="/inscription">
+        <a routerLink="/register">
           <button mat-raised-button color="primary" class="inscription">Inscription</button>
         </a>
       </div>
