@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {User} from "../../model/user";
+import {DatasetService} from "../../service/dataset.service";
+import {Dataset} from "../../model/dataset";
 
 @Component({
   selector: 'app-dataset-list',
@@ -9,12 +11,12 @@ import {User} from "../../model/user";
 })
 export class DatasetListComponent implements OnInit {
 
-  user : User;
+  datasets: Dataset[];
 
-  constructor(private userService : UserService) { }
+  constructor(private datasetService: DatasetService) { }
 
   ngOnInit(): void {
-    this.userService.getUserInfo().subscribe(user => this.user = user);
+    this.datasetService.getDatasets().subscribe(datasets => this.datasets = datasets);
   }
 
 }

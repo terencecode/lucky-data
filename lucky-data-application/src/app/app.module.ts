@@ -16,6 +16,7 @@ import {MyMaterialModule} from './modules/material.module';
 import { FooterComponent } from './component/footer/footer.component';
 import {ProfileComponent} from "./component/profile/profile.component";
 import { NavbarComponent } from './component/navbar/navbar.component';
+import { DatasetDetailsComponent } from './component/dataset-details/dataset-details.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NavbarComponent } from './component/navbar/navbar.component';
     ForgotPasswordComponent,
     FooterComponent,
     ProfileComponent,
-    NavbarComponent
+    NavbarComponent,
+    DatasetDetailsComponent
   ],
   imports: [
     BrowserModule,

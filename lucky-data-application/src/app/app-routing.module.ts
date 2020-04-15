@@ -5,12 +5,14 @@ import {DatasetListComponent} from './component/dataset-list/dataset-list.compon
 import { RegisterFormComponent } from './component/register-form/register-form.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import {ProfileComponent} from './component/profile/profile.component';
+import {DatasetDetailsComponent} from "./component/dataset-details/dataset-details.component";
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginFormComponent },
   { path: 'datasets', component: DatasetListComponent },
+  { path: 'dataset/:datasetId', component: DatasetDetailsComponent},
   { path: 'register', component: RegisterFormComponent },
   { path: 'forgotten-password', component: ForgotPasswordComponent },
   { path: 'profile', component: ProfileComponent }
