@@ -14,7 +14,7 @@ import { DatasetListComponent } from './component/dataset-list/dataset-list.comp
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MyMaterialModule} from './modules/material.module';
 import { FooterComponent } from './component/footer/footer.component';
-
+import {ProfileComponent} from "./component/profile/profile.component";
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { FooterComponent } from './component/footer/footer.component';
     DatasetListComponent,
     RegisterFormComponent,
     ForgotPasswordComponent,
-    FooterComponent
+    FooterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -4,13 +4,15 @@ import {LoginFormComponent} from './component/login-form/login-form.component';
 import {DatasetListComponent} from './component/dataset-list/dataset-list.component';
 import { RegisterFormComponent } from './component/register-form/register-form.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
+import {ProfileComponent} from "./component/profile/profile.component";
 
 
 const routes: Routes = [
   { path: '', component: LoginFormComponent },
   { path: 'datasets', component: DatasetListComponent },
   { path: 'inscription', component: RegisterFormComponent },
-  { path: 'mot-de-passe-oublie', component: ForgotPasswordComponent }
+  { path: 'mot-de-passe-oublie', component: ForgotPasswordComponent },
+  { path: 'mon-compte', component: ProfileComponent}
   ]
 ;
 
