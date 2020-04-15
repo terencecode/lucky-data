@@ -1,0 +1,20 @@
+<mat-toolbar color="primary" class="navbar mat-elevation-z6">
+  <a routerLink="/" mat-button>Accueil</a>
+
+  <a *ngIf="isLoggedIn()" routerLink="/datasets" mat-button>Datasets</a>
+
+  <a *ngIf="isLoggedIn()" routerLink="/" mat-button>Modèles</a>
+
+  <a *ngIf="isLoggedIn()" routerLink="/" mat-button>Soumettre</a>
+
+  <span class="space-fill"></span>
+
+  <a *ngIf="isLoggedIn()" mat-icon-button [matMenuTriggerFor]="beforeMenu" aria-label="Mon compte icone">
+    <mat-icon>person</mat-icon>
+  </a>
+
+  <mat-menu #beforeMenu="matMenu" xPosition="before">
+    <a routerLink="/profile" mat-menu-item>Mon Compte</a>
+    <a routerLink="/datasets" mat-menu-item>Déconnexion</a>
+  </mat-menu>
+</mat-toolbar>
