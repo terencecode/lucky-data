@@ -27,7 +27,7 @@ public class DatasetFile {
     @Lob
     @Column(name="data", nullable = false)
     @NotNull
-    @Basic(fetch = FetchType.LAZY)
+    //@Basic(fetch = FetchType.LAZY)
     private Blob data;
 
 

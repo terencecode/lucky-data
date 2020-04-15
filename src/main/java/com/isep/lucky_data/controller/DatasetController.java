@@ -63,11 +63,11 @@ public class DatasetController {
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/download/{datasetId}")
     @ApiOperation(value = "Download the dataset file", authorizations = {@Authorization(value = "JWT")})
-    public ResponseEntity<Resource> downloadDatasetFile(@PathVariable Long datasetId) throws SQLException {
+    public ResponseEntity<Resource> downloadDatasetFile(@PathVariable Long datasetId) {
         // Load file from database
         DatasetFile datasetFile = datasetService.getFile(datasetId);
 
-        Resource byteArrayResource = new ByteArrayResource(datasetFile.getData().getBytes(1L, (int) datasetFile.getData().length()));
+        Resource byteArrayResource = new ByteArrayResource(datasetService.getFileContent(datasetFile));
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(datasetFile.getType()))
@@ -82,10 +82,10 @@ public class DatasetController {
         Dataset dataset = datasetService.getDataset(datasetId);
         DatasetToDatasetDetailsResponseConverter converter = new DatasetToDatasetDetailsResponseConverter();
         DatasetDetailsResponse response = converter.convertFromEntity(dataset);
-        DatasetFile file = datasetService.getFile(datasetId);
-        /*response.setFileName(file.getName());
-        response.setContentType(file.getType());
-        response.setSize(file.getData().length());*/
+        DatasetFile datasetFile = datasetService.getFile(datasetId);
+        response.setFileName(datasetFile.getName());
+        response.setContentType(datasetFile.getType());
+        response.setSize(datasetService.getFileSize(datasetFile));
         return ResponseEntity.ok(response);
     }
 
