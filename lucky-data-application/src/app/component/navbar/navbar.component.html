@@ -15,6 +15,6 @@
 
   <mat-menu #beforeMenu="matMenu" xPosition="before">
     <a routerLink="/profile" mat-menu-item>Mon Compte</a>
-    <a routerLink="/datasets" mat-menu-item>Déconnexion</a>
+    <a (click)="logout()" mat-menu-item>Déconnexion</a>
   </mat-menu>
 </mat-toolbar>
