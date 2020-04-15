@@ -1,0 +1,64 @@
+<!--<mat-toolbar class="tool-bar">
+  <span>Mon compte</span>
+</mat-toolbar>-->
+<button mat-button>Accueil</button>
+
+<button mat-button>Datasets</button>
+
+<button mat-button>Modèles</button>
+
+<button mat-button>Soumettre</button>
+
+<button id="iconeprofil" mat-button [matMenuTriggerFor]="beforeMenu"><img src="img/iconeprofil.png"></button>
+
+<mat-menu #beforeMenu="matMenu" xPosition="before">
+  <button mat-menu-item>Profil</button>
+  <button mat-menu-item>Déconnexion</button>
+</mat-menu>
+
+<div id="conteneur">
+
+  <div class="header-page">
+  <p>Mes données importées</p>
+</div>
+
+  <div class="formulaire">
+<mat-card class="infos-utilisateur">
+  <mat-card-content>
+    <form [formGroup]="form">
+      <mat-form-field>
+        <legend>Informations profil</legend>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Nom</mat-label>
+          <input matInput type="text" name="lastname" placeholder="Nom">
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Prénom</mat-label>
+          <input matInput type="text" name="firstname" placeholder="Prénom">
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Département</mat-label>
+          <input matInput type="text" name="department" placeholder="Département">
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Mail</mat-label>
+          <input matInput type="text" name="email" placeholder="Mail">
+        </mat-form-field>
+
+        <button mat-button>Modifier mon profil</button>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <textarea matInput placeholder="Décrivez nous votre problème/demande"></textarea>
+        </mat-form-field>
+
+        <button mat-button class="demande">Contacter un administrateur</button>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+</mat-card>
+</div>
+</div>

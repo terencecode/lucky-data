@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'datasets', component: DatasetListComponent },
   { path: 'inscription', component: RegisterFormComponent },
   { path: 'mot-de-passe-oublie', component: ForgotPasswordComponent },
-  { path: 'mon-compte', component: ProfileComponent}
+  {path: 'mon-compte', component: ProfileComponent}
   ]
 ;
 
