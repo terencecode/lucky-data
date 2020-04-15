@@ -23,17 +23,15 @@ export class AuthService {
         shareReplay());
   }
 
-  register(firstName: string, lastName: string, departmentName: string, email: string, password: string, roleName: string) {
+  register(firstName: string, lastName: string, email: string, password: string , departmentName: string, roleName: string) {
     return this.http.put<{ access_token: string }>(environment.baseUrl + '/auth/user', {
-      departmentName,
-      email,
       firstName,
       lastName,
+      email,
       password,
+      departmentName,
       roleName
-    }).pipe(tap(res => {
-      this.login(email, password);
-    }));
+    });
   }
 
   logout() {
@@ -66,6 +64,7 @@ export class AuthService {
 
   private setSession(authResult) {
     const expiresAt = moment().add(authResult.expiresAt, 'ms');
+
     localStorage.setItem('accessToken', authResult.accessToken);
     localStorage.setItem('expiresAt', JSON.stringify(expiresAt.valueOf()));
   }

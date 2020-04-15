@@ -25,6 +25,8 @@ export class RegisterFormComponent implements OnInit {
   submitted = false;
   hide = true;
   hide2 = true;
+  loginError = false;
+  errorMess = '';
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -34,13 +36,13 @@ export class RegisterFormComponent implements OnInit {
       firstName: ['', Validators.compose([
         Validators.minLength(2),
         Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ,.-]*'),
+        Validators.pattern(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/u),
         Validators.required
       ])],
       lastName: ['', Validators.compose([
         Validators.minLength(2),
         Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ,.-]*'),
+        Validators.pattern(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$/u),
         Validators.required
       ])],
       department: [null, Validators.required],
@@ -81,19 +83,36 @@ export class RegisterFormComponent implements OnInit {
   register() {
     this.submitted = true;
     if (this.form.valid) {
-      this.authService.register(this.form.value.firstName, this.form.value.lastName, this.form.value.department,
-        this.form.value.email, this.form.value.password, 'ROLE_USER')
+      this.authService.register(this.form.value.firstName, this.form.value.lastName, this.form.value.email,
+        this.form.value.password, this.form.value.department, 'user')
         .subscribe(
           () => {
             console.log('User is register');
-            this.router.navigateByUrl('/datasets');
-          }
-        );
+            this.authService.login(this.form.value.email, this.form.value.password)
+              .subscribe(
+                () => {
+                  console.log('User is logged in');
+                  this.router.navigateByUrl('/datasets');
+                },
+                (error) => {
+                  console.log(error);
+                  this.loginError = true;
+                  this.errorMess = 'Une erreur interne est survenue, veuillez réessayer';
+                });
+              },
+      (error) => {
+              console.log(error);
+              this.loginError = true;
+              if (error.status === 400) {
+                this.errorMess = 'Adresse email déjà utilisée';
+              }
+              else {
+                this.errorMess = 'Une erreur interne est survenue, veuillez réessayer';
+              }
+          });
     }
   }
 
-  ngOnInit(): void {
-  }
-
+ngOnInit(): void {}
 
 }

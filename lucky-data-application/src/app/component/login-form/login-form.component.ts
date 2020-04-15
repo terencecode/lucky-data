@@ -12,6 +12,8 @@ export class LoginFormComponent implements OnInit {
 
   form: FormGroup;
   hide = true;
+  loginError = false;
+  errorMess = '';
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -30,6 +32,17 @@ export class LoginFormComponent implements OnInit {
           () => {
             console.log('User is logged in');
             this.router.navigateByUrl('/datasets');
+          },
+          (error) => {
+            console.log(error);
+            this.loginError = true;
+            if (error.status === 401) {
+              this.errorMess = 'Email ou mot de passe incorrect';
+            }
+            else {
+              this.errorMess = 'Une erreur interne est survenue, veuillez réessayer';
+            }
+
           }
         );
     }
