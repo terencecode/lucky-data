@@ -11,12 +11,15 @@ public class DatasetToDatasetResponseConverter extends OneWayConverter<DatasetRe
                 return null;
             }
 
+            Long id = dataset.getId();
             String title = dataset.getTitle();
             String description = dataset.getDescription();
             String source = dataset.getSource();
             String tag = dataset.getTag();
+            Long date = dataset.getDate().getTime();
+            Long downloads = dataset.getDownloads();
 
-            return new DatasetResponse(title, description, source, tag);
+            return new DatasetResponse(id, title, description, source, tag, date, downloads);
         });
     }
 }
