@@ -17,6 +17,7 @@ import { FooterComponent } from './component/footer/footer.component';
 import {ProfileComponent} from "./component/profile/profile.component";
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { DatasetDetailsComponent } from './component/dataset-details/dataset-details.component';
+import { DatasetTileComponent } from './component/dataset-tile/dataset-tile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { DatasetDetailsComponent } from './component/dataset-details/dataset-det
     FooterComponent,
     ProfileComponent,
     NavbarComponent,
-    DatasetDetailsComponent
+    DatasetDetailsComponent,
+    DatasetTileComponent
   ],
   imports: [
     BrowserModule,

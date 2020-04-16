@@ -1,5 +1,23 @@
-<div *ngFor="let dataset of datasets">
-  <p>{{ dataset.title }}</p>
-  <p>{{ dataset.description }}</p>
-</div>
+<mat-sidenav-container autosize class="page">
+  <mat-sidenav opened mode="side" class="sidenav">
+    <h3>Tri des datasets :</h3>
+    <mat-button-toggle-group vertical>
+      <mat-button-toggle value="récent">+ Populaire</mat-button-toggle>
+      <mat-button-toggle value="ancien">- Populaire</mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-button-toggle-group vertical>
+      <mat-button-toggle value="récent">+ Récent</mat-button-toggle>
+      <mat-button-toggle value="ancien">- Récent</mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-button-toggle-group vertical>
+      <mat-button-toggle value="récent">De A à Z</mat-button-toggle>
+      <mat-button-toggle value="ancien">De Z à A</mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div *ngFor="let dataset of datasets" class="dataset-tiles">
+      <app-dataset-tile [dataset]="dataset"></app-dataset-tile>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
