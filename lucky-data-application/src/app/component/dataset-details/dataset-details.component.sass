@@ -1,0 +1,35 @@
+@import '../../../custom-theme'
+.page
+  height: calc(90vh - 64px)
+
+  .sidenav
+    padding: 20px
+
+    mat-button-toggle-group
+      width: 98%
+
+
+  mat-sidenav-content
+    display: flex
+    align-items: center
+    justify-content: center
+    .container
+      padding: 32px
+      max-width: 500px
+
+      .title
+        
+        .datasetTitle
+          color: mat-color($lucky-data-application-accent)
+          display: flex
+          justify-content: space-between
+
+      .datasetDes
+        font-size: medium
+
+      .bottom
+        margin-top: 2%
+        display: flex
+        justify-content: stretch
+      .datasetType, .datasetSize , .download
+        margin-left: 20px

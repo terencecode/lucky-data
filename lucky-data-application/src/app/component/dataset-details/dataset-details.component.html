@@ -1,2 +1,56 @@
-<p>{{ dataset.title }}</p>
-<p>{{ dataset.description }}</p>
+
+<mat-sidenav-container autosize class="page">
+  <mat-sidenav opened mode="side" class="sidenav">
+    <mat-card-title style="font-size: medium; text-align: center">Historique</mat-card-title>
+    <br>
+    <mat-button-toggle-group vertical>
+      <mat-button-toggle value="04/2020" checked>Avril 2020</mat-button-toggle>
+      <mat-button-toggle value="03/2020">Mars 2020</mat-button-toggle>
+      <mat-button-toggle value="02/2020">Février 2020</mat-button-toggle>
+      <mat-button-toggle value="01/2020">Janvier 2020</mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-card class="container">
+      <mat-card-title class="title">
+        <mat-card-title class="datasetTitle">
+          {{ dataset.title }}
+          <span class="example-button-container">
+            <button mat-mini-fab aria-label="download button"><mat-icon>save_alt</mat-icon></button>
+          </span>
+        </mat-card-title>
+        <mat-card-subtitle class="datasetSource " style="padding-top:10px;">Source: {{ dataset.source }}</mat-card-subtitle>
+      </mat-card-title>
+      <mat-card-content class="datasetDes">
+          <br>
+          <div class="datasetDesContainer">
+            {{ dataset.description }}
+          </div>
+          <br>
+
+
+        </mat-card-content>
+      <mat-card-footer class="bottom">
+          <br>
+          <label class="datasetReleaseDate" >
+            <mat-icon aria-hidden="true" aria-label="calendar">calendar_today</mat-icon>
+            <label>{{dataset.date|date}}   </label>
+          </label>
+          <span class="datasetType" >
+            <mat-icon aria-hidden="true" aria-label="list">folder_open</mat-icon>
+            <label>{{ dataset.contentType.substr(dataset.contentType.length-5,dataset.contentType.length) }}   </label>
+          </span>
+          <span class="datasetSize" >
+            <mat-icon aria-hidden="true" aria-label="storage">sd_storage</mat-icon>
+            <a>{{ (dataset.size | number).substr(0,5)}} ko</a>
+          </span>
+          <span class="download" >
+            <mat-icon aria-hidden="true" aria-label="Example home icon">get_app_icon</mat-icon>
+            <label>{{ (dataset.downloads | number)}}</label>
+          </span>
+        </mat-card-footer>
+    </mat-card>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
