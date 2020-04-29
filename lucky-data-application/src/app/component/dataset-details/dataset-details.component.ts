@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
-import {Dataset} from "../../model/dataset";
 import {DatasetService} from "../../service/dataset.service";
+import {Dataset} from "../../model/dataset";
 
 @Component({
   selector: 'app-dataset-details',
@@ -11,6 +11,7 @@ import {DatasetService} from "../../service/dataset.service";
 })
 export class DatasetDetailsComponent implements OnInit {
   dataset: Dataset;
+  title = 'File download';
 
   constructor(private route: ActivatedRoute, private datasetService: DatasetService) { }
 
@@ -19,5 +20,10 @@ export class DatasetDetailsComponent implements OnInit {
       this.datasetService.getDataset(params.get('datasetId')).subscribe(dataset => this.dataset = dataset);
     });
   }
-
+  download() {
+    this.datasetService.downloadFile('1').subscribe(
+      response => window.open(window.URL.createObjectURL(response)),
+        error => console.log('Error downloading the file'),
+      () => console.log('File downloaded successfully'));
+  }
 }
