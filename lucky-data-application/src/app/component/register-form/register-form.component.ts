@@ -100,7 +100,7 @@ export class RegisterFormComponent implements OnInit {
                   this.errorMess = 'Une erreur interne est survenue, veuillez réessayer';
                 });
               },
-      (error) => {
+          (error) => {
               console.log(error);
               this.loginError = true;
               if (error.status === 400) {
