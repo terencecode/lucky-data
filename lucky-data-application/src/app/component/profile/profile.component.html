@@ -1,46 +1,32 @@
-
 <div id="conteneur">
-  <div class="header-page">
-  <p>Mes données importées</p>
-</div>
-
-  <div class="formulaire">
-<mat-card class="infos-utilisateur">
-  <mat-card-content>
+  <mat-card class="formulaire">
     <form [formGroup]="form">
-      <mat-form-field>
-        <legend>Informations profil</legend>
-
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Nom</mat-label>
-          <input matInput type="text" name="lastname" placeholder="Nom">
-        </mat-form-field>
-
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Prénom</mat-label>
-          <input matInput type="text" name="firstname" placeholder="Prénom">
-        </mat-form-field>
-
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Département</mat-label>
-          <input matInput type="text" name="department" placeholder="Département">
-        </mat-form-field>
-
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Mail</mat-label>
-          <input matInput type="text" name="email" placeholder="Mail">
-        </mat-form-field>
-
-        <button mat-button>Modifier mon profil</button>
-
-        <mat-form-field class="full-width" appearance="fill">
-          <textarea matInput placeholder="Décrivez nous votre problème/demande"></textarea>
-        </mat-form-field>
-
-        <button mat-button class="demande">Contacter un administrateur</button>
+      <mat-form-field class="full-width" appearance="legacy">
+        <mat-label>Nom</mat-label>
+        <input matInput name="firstName" value="{{user.firstName}}" disabled>
       </mat-form-field>
+      <br>
+
+      <mat-form-field class="full-width" appearance="legacy">
+        <mat-label>Prénom</mat-label>
+        <input matInput name="lastName" value="{{user.lastName}}" disabled>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="full-width" appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input matInput name="email" value="{{user.email}}" disabled>
+      </mat-form-field>
+      <br>
+
+      <button mat-button>Modifier mon profil</button>
+      <button mat-button>Enregistrer</button>
     </form>
-  </mat-card-content>
-</mat-card>
-</div>
+  </mat-card>
+
+  <mat-card class="consultated-data">
+    <div>
+      <p>Dernières données consultées</p>
+    </div>
+  </mat-card>
 </div>

@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {RegisterFormComponent} from "../register-form/register-form.component";
-
+import {Component, Directive, Input, OnInit} from '@angular/core';
+import {User} from "../../model/user";
+import {UserService} from "../../service/user.service";
+import {FormBuilder, FormGroup, NgControl} from "@angular/forms";
 
 @Component({
   selector: 'app-profile',
@@ -10,13 +10,16 @@ import {RegisterFormComponent} from "../register-form/register-form.component";
 })
 
 export class ProfileComponent implements OnInit {
+  user: User;
   form: FormGroup;
 
-  constructor() {
-
+  constructor(private userService: UserService){
   }
 
   ngOnInit(): void {
+    this.userService.getUserInfo().subscribe(user => {
+      this.user = user;
+    });
   }
 
 }
