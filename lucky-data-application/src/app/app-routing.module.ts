@@ -6,6 +6,7 @@ import { RegisterFormComponent } from './component/register-form/register-form.c
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import {ProfileComponent} from './component/profile/profile.component';
 import {DatasetDetailsComponent} from "./component/dataset-details/dataset-details.component";
+import {DatasetUploadComponent} from "./component/dataset-upload/dataset-upload.component";
 
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'dataset/:datasetId', component: DatasetDetailsComponent},
   { path: 'register', component: RegisterFormComponent },
   { path: 'forgotten-password', component: ForgotPasswordComponent },
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile', component: ProfileComponent },
+  { path: 'upload/dataset', component: DatasetUploadComponent}
   ]
 ;
 

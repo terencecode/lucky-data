@@ -13,11 +13,13 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { DatasetListComponent } from './component/dataset-list/dataset-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MyMaterialModule} from './modules/material.module';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FooterComponent } from './component/footer/footer.component';
 import {ProfileComponent} from "./component/profile/profile.component";
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { DatasetDetailsComponent } from './component/dataset-details/dataset-details.component';
 import { DatasetTileComponent } from './component/dataset-tile/dataset-tile.component';
+import { DatasetUploadComponent } from './component/dataset-upload/dataset-upload.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { DatasetTileComponent } from './component/dataset-tile/dataset-tile.comp
     ProfileComponent,
     NavbarComponent,
     DatasetDetailsComponent,
-    DatasetTileComponent
+    DatasetTileComponent,
+    DatasetUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -38,11 +41,12 @@ import { DatasetTileComponent } from './component/dataset-tile/dataset-tile.comp
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MyMaterialModule,
+    MyMaterialModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })

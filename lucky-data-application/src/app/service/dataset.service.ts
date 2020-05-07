@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import { Observable } from "rxjs";
 import {environment} from "../../environments/environment";
 import {Dataset} from "../model/dataset";
-import {HttpResponse} from "@angular/common/http";
 
 
 @Injectable({
@@ -24,6 +23,10 @@ export class DatasetService {
   }
 
   public downloadFile(datasetId: string): Observable<any>{
-    return this.http.get(environment.baseUrl + '/dataset/download/' + datasetId , { responseType : "blob"  } );
+    return this.http.get(environment.baseUrl + '/dataset/download/' + datasetId, { responseType : "blob"  } );
+  }
+
+  public uploadDataset(formData: FormData, params) {
+    return this.http.post(environment.baseUrl + '/dataset/upload', formData, {params: params});
   }
 }

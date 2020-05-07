@@ -1,0 +1,87 @@
+<div class="page">
+  <div class="mat-headline">Soumettre un dataset</div>
+  <mat-card class="formCard">
+    <mat-card-content>
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+
+        <mat-horizontal-stepper formArrayName="formArray" linear labelPosition="bottom">
+          <mat-step formGroupName="0" [stepControl]="formArray.get([0])">
+            <ng-template matStepLabel>Informations basiques</ng-template>
+            <div  class="fields">
+              <mat-form-field appearance="outline" class="field">
+                <mat-label>Titre</mat-label>
+                <input matInput name="title" formControlName="title" required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field">
+                <mat-label>Description</mat-label>
+                <textarea matInput placeholder="Ex. This dataset deals with air pollution measurement information in Seoul, South Korea" name="description" formControlName="description" [required]="true"></textarea>
+                <mat-hint align="end">5000 caractères maximum</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field">
+                <mat-label>Source</mat-label>
+                <input matInput placeholder="Ex. Banque de France" name="source" formControlName="source" required>
+              </mat-form-field>
+
+              <mat-radio-group formControlName="dateRadio" required (change)="radioButtonChanged($event)" class="radioGroup">
+                <mat-radio-button value="unique" name="dateRadio" class="radioButtons">Date unique</mat-radio-button>
+                <mat-radio-button value="range" name="dateRadio" class="radioButtons">Durée</mat-radio-button>
+              </mat-radio-group>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('dateRadio').value == 'unique'">
+                <mat-label>Date des données</mat-label>
+                <input matInput [matDatepicker]="datasetDatePicker" name="datasetDate" formControlName="datasetDate" [required]="formArray.get([0]).get('dateRadio').value == 'unique'">
+                <mat-datepicker-toggle matSuffix [for]="datasetDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datasetDatePicker></mat-datepicker>
+                <mat-hint align="end">Date concernée par les données</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('dateRadio').value == 'range'">
+                <mat-label>Date de début</mat-label>
+                <input matInput [matDatepicker]="datasetStartDatePicker" name="datasetStartDate" formControlName="datasetStartDate" [required]="formArray.get([0]).get('dateRadio').value == 'range'">
+                <mat-datepicker-toggle matSuffix [for]="datasetStartDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datasetStartDatePicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('dateRadio').value == 'range'">
+                <mat-label>Date de fin</mat-label>
+                <input matInput [matDatepicker]="datasetEndDatePicker" name="datasetEndDate" formControlName="datasetEndDate" [required]="formArray.get([0]).get('dateRadio').value == 'range'">
+                <mat-datepicker-toggle matSuffix [for]="datasetEndDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datasetEndDatePicker></mat-datepicker>
+              </mat-form-field>
+
+              <div class="uploadFile">
+                <input style="display: none" id="input-file-id" type="file" formControlName="file" (change)="fileChanged($event)" required [accept]="acceptedExtensions()">
+                <label for="input-file-id" class="mat-focus-indicator mat-raised-button mat-button-base mat-primary">{{file?.name || 'Sélectionner un fichier' }}</label>
+              </div>
+
+            </div>
+            <div class="actionButtons">
+              <button mat-button matStepperNext type="button" [disabled]="!formArray.get([0]).valid">Suivant</button>
+            </div>
+          </mat-step>
+
+          <mat-step formGroupName="1" [stepControl]="formArray.get([1])">
+            <ng-template matStepLabel>Informations supplémentaires</ng-template>
+            <div  class="fields">
+              <mat-form-field appearance="outline" class="field">
+                <mat-label>Tag</mat-label>
+                <mat-select formControlName="tag">
+                  <mat-option value="option">Option 1</mat-option>
+                  <mat-option value="option">Option 2</mat-option>
+                  <mat-option value="option">Option 3</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="actionButtons">
+              <button mat-button matStepperPrevious type="button">Retour</button>
+              <button mat-button matStepperNext type="submit">Créer</button>
+            </div>
+          </mat-step>
+
+        </mat-horizontal-stepper>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
