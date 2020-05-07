@@ -26,11 +26,10 @@ public class DatasetConsultation {
 
     public DatasetConsultation() {}
 
-    public DatasetConsultation(DatasetConsultationKey id, Department department, Dataset dataset, @NotNull Long consultations) {
+    public DatasetConsultation(DatasetConsultationKey id, Department department, Dataset dataset) {
         this.id = id;
         this.department = department;
         this.dataset = dataset;
-        this.consultations = consultations;
     }
 
     public DatasetConsultationKey getId() {

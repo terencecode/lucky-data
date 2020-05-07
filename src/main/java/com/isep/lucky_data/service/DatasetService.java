@@ -50,7 +50,7 @@ public class DatasetService {
 
             Department userDepartment = user.getDepartment();
 
-            DatasetConsultation datasetConsultation = new DatasetConsultation(new DatasetConsultationKey(userDepartment.getId(), dataset.getId()), userDepartment, dataset, 0L);
+            DatasetConsultation datasetConsultation = new DatasetConsultation(new DatasetConsultationKey(userDepartment.getId(), dataset.getId()), userDepartment, dataset);
 
             datasetConsultationRepository.save(datasetConsultation);
 
@@ -61,8 +61,13 @@ public class DatasetService {
     }
 
     public DatasetFile getFile(Long datasetId) {
-        return datasetFileRepository.findByDataset(datasetRepository.findById(datasetId).orElseThrow(() -> new DatasetNotFoundException("The dataset with id " + datasetId + " does not exists")))
+        Dataset dataset = datasetRepository.findById(datasetId).orElseThrow(
+                () -> new DatasetNotFoundException("The Dataset with id " + datasetId + " does not exists !"));
+        DatasetFile datasetFile = datasetFileRepository.findByDataset(dataset)
                 .orElseThrow(() -> new FileStorageException("File not found with id " + datasetId));
+        dataset.setDownloads(dataset.getDownloads() + 1);
+        datasetRepository.save(dataset);
+        return datasetFile;
     }
 
     @Transactional
@@ -83,15 +88,18 @@ public class DatasetService {
         }
     }
 
-    public Dataset getDataset(Long datasetId) {
-        //TODO: initialize and/or increment the datasetConsultation
-        return datasetRepository.findById(datasetId).orElseThrow(
+    public Dataset getDataset(Long datasetId, ApplicationUser user) {
+        Dataset dataset = datasetRepository.findById(datasetId).orElseThrow(
                 () -> new DatasetNotFoundException("The Dataset with id " + datasetId + " does not exists !"));
+        DatasetConsultation datasetConsultation = datasetConsultationRepository.findById(new DatasetConsultationKey(user.getDepartment().getId(), dataset.getId()))
+                .orElseGet(() -> new DatasetConsultation(new DatasetConsultationKey(user.getDepartment().getId(), dataset.getId()), user.getDepartment(), dataset));
+        datasetConsultation.setConsultations(datasetConsultation.getConsultations() + 1);
+        datasetConsultationRepository.save(datasetConsultation);
+        return dataset;
 
     }
 
     public List<Dataset> getAllDatasets() {
         return datasetRepository.findAll();
-
     }
 }

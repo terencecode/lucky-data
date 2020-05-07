@@ -77,8 +77,9 @@ public class DatasetController {
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/{datasetId}")
     @ApiOperation(value = "Gets dataset info by id", authorizations = {@Authorization(value = "JWT")}, produces = "application/json")
-    public ResponseEntity<DatasetDetailsResponse> getDatasetById(@PathVariable Long datasetId) {
-        Dataset dataset = datasetService.getDataset(datasetId);
+    public ResponseEntity<DatasetDetailsResponse> getDatasetById(@PathVariable Long datasetId, @CurrentUser UserPrincipal userPrincipal) {
+        ApplicationUser user = userService.getCurrentUser(userPrincipal);
+        Dataset dataset = datasetService.getDataset(datasetId, user);
         DatasetToDatasetDetailsResponseConverter converter = new DatasetToDatasetDetailsResponseConverter();
         DatasetDetailsResponse response = converter.convertFromEntity(dataset);
         DatasetFile datasetFile = datasetService.getFile(datasetId);
