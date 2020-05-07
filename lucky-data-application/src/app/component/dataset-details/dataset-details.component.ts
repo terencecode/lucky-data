@@ -22,8 +22,15 @@ export class DatasetDetailsComponent implements OnInit {
   }
   download() {
     this.datasetService.downloadFile('1').subscribe(
-      response => window.open(window.URL.createObjectURL(response)),
+      response => {
+        window.open(window.URL.createObjectURL(response))
+        this.fetchDataset(this.dataset.id);
+      },
         error => console.log('Error downloading the file'),
       () => console.log('File downloaded successfully'));
+  }
+
+  fetchDataset(datasetId: bigint) {
+    this.datasetService.getDataset(datasetId).subscribe(dataset => this.dataset = dataset);
   }
 }

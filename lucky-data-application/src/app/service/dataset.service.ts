@@ -14,7 +14,7 @@ export class DatasetService {
   constructor(private http: HttpClient) {
   }
 
-  public getDataset(datasetId: string): Observable<Dataset> {
+  public getDataset(datasetId: string | bigint): Observable<Dataset> {
     return this.http.get<Dataset>(environment.baseUrl + '/dataset/' + datasetId);
   }
 
