@@ -22,11 +22,12 @@ public class DatasetToDatasetDetailsResponseConverter extends OneWayConverter<Da
             String source = dataset.getSource();
             Long uploadedAt = dataset.getUploadedAt().getTime();
             Long date = dataset.getDate().getTime();
-            Long startDate = dataset.getStartDate().getTime();
-            Long endDate = dataset.getEndDate().getTime();
-            Float latitude = dataset.getLatitude();
-            Float longitude = dataset.getLongitude();
-            String tag = dataset.getTag();
+
+            Long startDate = dataset.getStartDate() != null ? dataset.getStartDate().getTime() : null;
+            Long endDate = dataset.getEndDate() != null ? dataset.getEndDate().getTime() : null;
+            Float latitude = dataset.getLatitude() != null ? dataset.getLatitude() : null;
+            Float longitude = dataset.getLongitude() != null ? dataset.getLongitude() : null;
+            String tag = dataset.getTag() != null ? dataset.getTag() : null;
             /*DatasetFile file = dataset.getDatasetFile();
             String fileName = file.getName();
             String contentType = file.getType();
