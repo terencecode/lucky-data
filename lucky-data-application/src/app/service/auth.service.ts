@@ -25,12 +25,12 @@ export class AuthService {
 
   register(firstName: string, lastName: string, email: string, password: string , departmentName: string, roleName: string) {
     return this.http.put<{ access_token: string }>(environment.baseUrl + '/auth/user', {
-      firstName,
-      lastName,
-      email,
-      password,
-      departmentName,
-      roleName
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      departmentName: departmentName,
+      roleName: roleName
     });
   }
 

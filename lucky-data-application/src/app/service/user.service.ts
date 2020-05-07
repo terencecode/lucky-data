@@ -18,10 +18,10 @@ export class UserService {
 
   public updateUser(firstName: string, lastName: string, email: string, password: string) {
     return this.http.put(environment.baseUrl + '/user', {
-      firstName,
-      lastName,
-      email,
-      password
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password
     });
   }
 }
