@@ -1,5 +1,6 @@
 <mat-sidenav-container autosize class="page">
   <mat-sidenav opened mode="side" class="sidenav">
+    <h3 class="number-of-datasets"></h3>
     <h3>Tri des datasets :</h3>
     <mat-button-toggle-group vertical>
       <mat-button-toggle value="récent">+ Populaire</mat-button-toggle>
@@ -14,9 +15,11 @@
       <mat-button-toggle value="ancien">De Z à A</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <div *ngFor="let dataset of datasets" class="dataset-tiles">
-      <app-dataset-tile [dataset]="dataset"></app-dataset-tile>
+  <mat-sidenav-content class="sidenav-content">
+    <div class="dataset-list">
+      <div *ngFor="let dataset of datasets" class="dataset-tile-container">
+        <app-dataset-tile [dataset]="dataset"></app-dataset-tile>
+      </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

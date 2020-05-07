@@ -1,60 +1,62 @@
-<mat-card class="my-form">
-  <div *ngIf="loginError" class="full-width loginError">{{errorMess}}</div>
-  <mat-card-content>
-    <form [formGroup]="form">
-      <mat-form-field class="full-width">
-        <mat-label>Nom</mat-label>
-        <input matInput placeholder="Nom" name="firstName" formControlName="firstName" required>
-        <mat-error *ngIf="this.form.controls.firstName.errors" class="invalid">Nom invalide</mat-error>
-      </mat-form-field>
+<div class="page">
+  <mat-card class="my-form">
+    <div *ngIf="loginError" class="full-width loginError">{{errorMess}}</div>
+    <mat-card-content>
+      <form [formGroup]="form">
+        <mat-form-field class="full-width">
+          <mat-label>Nom</mat-label>
+          <input matInput placeholder="Nom" name="firstName" formControlName="firstName" required>
+          <mat-error *ngIf="this.form.controls.firstName.errors" class="invalid">Nom invalide</mat-error>
+        </mat-form-field>
 
-      <mat-form-field class="full-width">
-        <mat-label>Prénom</mat-label>
-        <input matInput placeholder="Prénom" name="lastName" formControlName="lastName" required>
-        <mat-error *ngIf="this.form.controls.lastName.errors" class="invalid">Prénom invalide</mat-error>
-      </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Prénom</mat-label>
+          <input matInput placeholder="Prénom" name="lastName" formControlName="lastName" required>
+          <mat-error *ngIf="this.form.controls.lastName.errors" class="invalid">Prénom invalide</mat-error>
+        </mat-form-field>
 
-      <div class="full-width">
-        <mat-select placeholder="Département *" formControlName="department" required>
-          <mat-option *ngFor="let department of departments" [value]="department.name">
-            {{department.name}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="submitted && this.form.controls.department.errors" class="invalid invalidDepartment">Veuillez selectionner un département</mat-error>
-      </div>
+        <div class="full-width">
+          <mat-select placeholder="Département *" formControlName="department" required>
+            <mat-option *ngFor="let department of departments" [value]="department.name">
+              {{department.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="submitted && this.form.controls.department.errors" class="invalid invalidDepartment">Veuillez selectionner un département</mat-error>
+        </div>
 
-      <mat-form-field class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput placeholder="exemple@lcl.fr" name="email" formControlName="email" required>
-        <mat-error *ngIf="this.form.controls.email.errors" class="invalid">L'email doit être de type exemple@lcl.fr</mat-error>
-      </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="exemple@lcl.fr" name="email" formControlName="email" required>
+          <mat-error *ngIf="this.form.controls.email.errors" class="invalid">L'email doit être de type exemple@lcl.fr</mat-error>
+        </mat-form-field>
 
-      <mat-form-field class="full-width">
-        <mat-label>Mot de passe</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Minimum 8 caractères, 1 majuscule et 1 chiffre" name="password" formControlName="password" required>
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-        <mat-error *ngIf="this.form.controls.password.errors" class="invalid">Le mot de passe doit comporter minimum 8 caractères, 1 majuscule et 1 chiffre</mat-error>
-      </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Minimum 8 caractères, 1 majuscule et 1 chiffre" name="password" formControlName="password" required>
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="this.form.controls.password.errors" class="invalid">Le mot de passe doit comporter minimum 8 caractères, 1 majuscule et 1 chiffre</mat-error>
+        </mat-form-field>
 
-      <mat-form-field class="full-width check">
-        <mat-label>Confirmation du mot de passe</mat-label>
-        <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Confirmation du mot de passe" name="passwordConfirm" formControlName="passwordConfirm" required>
-        <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide passwordConfirm'" [attr.aria-pressed]="hide2">
-          <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-        <mat-error *ngIf="this.form.controls.passwordConfirm.errors">Les mots de passe sont différents</mat-error>
-      </mat-form-field>
+        <mat-form-field class="full-width check">
+          <mat-label>Confirmation du mot de passe</mat-label>
+          <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Confirmation du mot de passe" name="passwordConfirm" formControlName="passwordConfirm" required>
+          <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide passwordConfirm'" [attr.aria-pressed]="hide2">
+            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="this.form.controls.passwordConfirm.errors">Les mots de passe sont différents</mat-error>
+        </mat-form-field>
 
-      <div class="full-width">
-        <mat-checkbox formControlName="acceptTerms" color="primary"><mat-label>J'accepte les termes et conditions</mat-label></mat-checkbox>
-        <mat-error *ngIf="submitted && this.form.controls.acceptTerms.errors" class="invalid invalidTerms">Veuillez accepter les termes et conditions</mat-error>
-      </div>
+        <div class="full-width">
+          <mat-checkbox formControlName="acceptTerms" color="primary"><mat-label>J'accepte les termes et conditions</mat-label></mat-checkbox>
+          <mat-error *ngIf="submitted && this.form.controls.acceptTerms.errors" class="invalid invalidTerms">Veuillez accepter les termes et conditions</mat-error>
+        </div>
 
-      <div class="button">
-        <button type="submit" mat-raised-button (click)="register()" color="primary">Inscription</button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
+        <div class="button">
+          <button type="submit" mat-raised-button (click)="register()" color="primary">Inscription</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

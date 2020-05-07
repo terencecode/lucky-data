@@ -1,11 +1,11 @@
-<mat-card [routerLink]="['/dataset/', dataset.id]" class="dataset-tile">
+<mat-card [routerLink]="['/dataset/', dataset.id]" class="dataset-tile" matRipple>
   <mat-card-title class="title">{{ dataset.title }}</mat-card-title>
   <mat-card-content class="content">
     <p>{{ dataset.description }}</p>
   </mat-card-content>
   <mat-card-footer class="tile-footer">
-    <div>{{ dataset.source }}</div>
-    <div>{{ dataset.tag }}</div>
+    <div class=".mat-small">{{ dataset.source }}</div>
+    <div class=".mat-small">{{ dataset.tag }}</div>
   </mat-card-footer>
 </mat-card>
 
