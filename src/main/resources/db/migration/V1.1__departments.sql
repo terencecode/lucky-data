@@ -1,0 +1,13 @@
+INSERT INTO department (name) VALUES ('Marketing produit') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Marketing client') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Commercial') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Financière') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Risque') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('SNI') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Ressources Humaines') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Logistique') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Etudes économiques') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Comptables') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Data-science') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Audit / Inspection') ON CONFLICT DO NOTHING;
+INSERT INTO department (name) VALUES ('Autre') ON CONFLICT DO NOTHING;

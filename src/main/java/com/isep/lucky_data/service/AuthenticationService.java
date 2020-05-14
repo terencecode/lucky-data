@@ -19,8 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RoleNotFoundException;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
@@ -73,7 +75,7 @@ public class AuthenticationService {
 
         applicationUser.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
-        addRole(applicationUser, RoleName.fromName(signUpRequest.getRoleName()));
+        addRole(applicationUser);
         ApplicationUser savedUser = applicationUserRepository.save(applicationUser);
         Set<ApplicationUser> departmentUsers = requestDepartment.getApplicationUsers();
         if(departmentUsers == null) {
@@ -86,9 +88,8 @@ public class AuthenticationService {
         return savedUser.getId();
     }
 
-    private void addRole(ApplicationUser applicationUser, RoleName roleName) {
-        Role userRole = roleRepository.findByRole(roleName)
-                .orElseGet(() -> roleRepository.save(new Role(roleName)));
+    private void addRole(ApplicationUser applicationUser) {
+        Role userRole = roleRepository.findByRole(RoleName.ROLE_USER);
         Set<Role> roles = applicationUser.getRoles();
         roles.add(userRole);
         applicationUser.setRoles(roles);
