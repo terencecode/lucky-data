@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../service/auth.service';
 import {Router} from '@angular/router';
-
-interface Department {
-  name: string;
-}
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-register-form',
@@ -14,13 +11,7 @@ interface Department {
 })
 export class RegisterFormComponent implements OnInit {
 
-  departments: Department[] = [
-    {name: 'Marketing'},
-    {name: 'Risque'},
-    {name: 'Crédit'},
-    {name: 'Partenariats'}
-  ];
-
+  departments: any = [];
   form: FormGroup;
   submitted = false;
   hide = true;
@@ -30,7 +21,10 @@ export class RegisterFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private http: HttpClient) {
+
+    this.http.get('../../../assets/departmentconfig.json').subscribe((res) => this.departments = res);
 
     this.form = this.fb.group({
       firstName: ['', Validators.compose([

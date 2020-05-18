@@ -12,6 +12,13 @@
     <a routerLink="" mat-menu-item>Modèle</a>
   </mat-menu>
 
+  <a *ngIf="isAdmin()" [matMenuTriggerFor]="matAdminSubmit" mat-button>Administration</a>
+
+  <mat-menu #matAdminSubmit="matMenu" xPosition="before">
+    <a routerLink="admin/users" mat-menu-item>Gestion des utilisateurs</a>
+    <a routerLink="" mat-menu-item>Gestion des datasets</a>
+  </mat-menu>
+
   <span class="space-fill"></span>
 
   <a *ngIf="isLoggedIn()" mat-icon-button [matMenuTriggerFor]="beforeMenu" aria-label="Mon compte icone">

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -22,6 +23,16 @@ public class UserService {
 
         if (user.isPresent()) {
             return user.get();
+        } else throw new UserNotFoundException();
+    }
+
+    public List<ApplicationUser> getAllUsers() {
+        return applicationUserRepository.findAll();
+    }
+
+    public void deleteByEmail(String email) {
+        if(applicationUserRepository.existsByEmail(email)) {
+            applicationUserRepository.deleteByEmail(email);
         } else throw new UserNotFoundException();
     }
 

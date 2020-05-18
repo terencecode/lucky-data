@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {DatasetService} from "../../service/dataset.service";
-import {Dataset} from "../../model/dataset";
+import {DatasetService} from '../../service/dataset.service';
+import {Dataset} from '../../model/dataset';
 
 @Component({
   selector: 'app-dataset-list',

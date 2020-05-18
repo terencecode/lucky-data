@@ -3,6 +3,8 @@ import {HttpClient, HttpRequest} from '@angular/common/http';
 import {shareReplay, tap} from 'rxjs/operators';
 import * as moment from 'moment';
 import {environment} from '../../environments/environment';
+import {UserService} from './user.service';
+import {User} from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class AuthService {
 
   cachedRequests: Array<HttpRequest<any>> = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userService: UserService) {
 
   }
 
@@ -37,6 +39,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('expiresAt');
+    localStorage.removeItem('roles');
   }
 
   public isLoggedIn() {
@@ -62,10 +65,17 @@ export class AuthService {
     // be called after the token is refreshed
   }
 
+  private setRoles(){
+    this.userService.getUserInfo().subscribe(user => {
+      localStorage.setItem('roles', user.role.toString());
+    });
+  }
+
   private setSession(authResult) {
     const expiresAt = moment().add(authResult.expiresAt, 'ms');
 
     localStorage.setItem('accessToken', authResult.accessToken);
     localStorage.setItem('expiresAt', JSON.stringify(expiresAt.valueOf()));
+    this.setRoles();
   }
 }

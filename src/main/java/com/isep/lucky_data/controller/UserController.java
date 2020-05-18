@@ -15,6 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/user")
 @Api(tags = "User API")
@@ -38,6 +42,25 @@ public class UserController {
     @ApiOperation(value = "Updates the user infos" , authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<?> updateCurrentUser(@RequestBody UserRequest userRequest, @CurrentUser UserPrincipal userPrincipal) {
         userService.updateCurrentUser(userRequest, userPrincipal);
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
+    @GetMapping("/users")
+    @ApiOperation(value = "Gets all users" , authorizations = {@Authorization(value = "JWT")})
+    public ResponseEntity<Collection<UserResponse>> getAllUsers() {
+        List<ApplicationUser> users = userService.getAllUsers();
+        UserToUserResponseConverter converter = new UserToUserResponseConverter();
+        Collection<UserResponse> responses = converter.createFromEntities(users);
+        return ResponseEntity.ok(responses);
+    }
+
+    @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
+    @Transactional
+    @DeleteMapping("/delete/{email}")
+    @ApiOperation(value = "Delete user" , authorizations = {@Authorization(value = "JWT")})
+    public ResponseEntity<?> deleteUser(@PathVariable("email") String email) {
+        userService.deleteByEmail(email);
         return ResponseEntity.ok().build();
     }
 }

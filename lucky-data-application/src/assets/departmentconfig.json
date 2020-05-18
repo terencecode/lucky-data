@@ -1,0 +1,16 @@
+[
+  {"name": "Marketing produit"},
+  {"name": "Marketing client"},
+  {"name": "Commercial"},
+  {"name": "Financière"},
+  {"name": "Risque"},
+  {"name": "SNI"},
+  {"name": "Ressources Humaines"},
+  {"name": "Logistique"},
+  {"name": "Etudes économiques"},
+  {"name": "Comptables"},
+  {"name": "Data-science"},
+  {"name": "Audit / Inspection"},
+  {"name": "Autre"}
+]
+

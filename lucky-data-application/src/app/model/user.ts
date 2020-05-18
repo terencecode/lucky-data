@@ -3,4 +3,5 @@ export class User {
   lastName: string;
   email: string;
   department: string;
+  role: Array<string>;
 }

@@ -7,6 +7,7 @@ import { ForgotPasswordComponent } from './component/forgot-password/forgot-pass
 import {ProfileComponent} from './component/profile/profile.component';
 import {DatasetDetailsComponent} from "./component/dataset-details/dataset-details.component";
 import {DatasetUploadComponent} from "./component/dataset-upload/dataset-upload.component";
+import {AdminUserComponent} from './component/admin-user/admin-user.component';
 
 
 const routes: Routes = [
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterFormComponent },
   { path: 'forgotten-password', component: ForgotPasswordComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'upload/dataset', component: DatasetUploadComponent}
+  { path: 'upload/dataset', component: DatasetUploadComponent},
+  { path: 'admin/users', component: AdminUserComponent}
   ]
 ;
 

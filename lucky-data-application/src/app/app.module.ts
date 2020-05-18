@@ -20,6 +20,7 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 import { DatasetDetailsComponent } from './component/dataset-details/dataset-details.component';
 import { DatasetTileComponent } from './component/dataset-tile/dataset-tile.component';
 import { DatasetUploadComponent } from './component/dataset-upload/dataset-upload.component';
+import { AdminUserComponent } from './component/admin-user/admin-user.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DatasetUploadComponent } from './component/dataset-upload/dataset-uploa
     NavbarComponent,
     DatasetDetailsComponent,
     DatasetTileComponent,
-    DatasetUploadComponent
+    DatasetUploadComponent,
+    AdminUserComponent
   ],
   imports: [
     BrowserModule,

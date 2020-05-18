@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
+import java.util.List;
 
 @Repository
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
@@ -15,4 +16,5 @@ public interface ApplicationUserRepository extends JpaRepository<ApplicationUser
     boolean existsByEmail(String email);
     Optional<ApplicationUser> findByEmail(String email);
     void deleteByEmail(String email);
+    List<ApplicationUser> findAll();
 }
