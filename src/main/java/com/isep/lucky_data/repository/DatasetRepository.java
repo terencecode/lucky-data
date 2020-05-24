@@ -12,5 +12,12 @@ import java.util.Optional;
 public interface DatasetRepository extends JpaRepository<Dataset, Long> {
     List<Dataset> findAll();
 
+    List<Dataset> findAllByOrderByUploadedAtAsc();
+    List<Dataset> findAllByOrderByUploadedAtDesc();
+    List<Dataset> findAllByOrderByTitleAsc();
+    List<Dataset> findAllByOrderByTitleDesc();
+    List<Dataset> findAllByOrderByDownloadsAsc();
+    List<Dataset> findAllByOrderByDownloadsDesc();
+
     Optional<Dataset> findById(Long datasetId);
 }

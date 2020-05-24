@@ -1,7 +1,7 @@
 <div class="page">
   <div class="mat-headline">Soumettre un dataset</div>
-  <mat-card class="formCard">
-    <mat-card-content>
+  <mat-card class="formCard" >
+    <mat-card-content *ngIf="!submitted">
       <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
         <mat-horizontal-stepper formArrayName="formArray" linear labelPosition="bottom">
@@ -68,6 +68,7 @@
               <mat-form-field appearance="outline" class="field">
                 <mat-label>Tag</mat-label>
                 <mat-select formControlName="tag">
+                  <mat-option></mat-option>
                   <mat-option value="option">Option 1</mat-option>
                   <mat-option value="option">Option 2</mat-option>
                   <mat-option value="option">Option 3</mat-option>
@@ -82,6 +83,11 @@
 
         </mat-horizontal-stepper>
       </form>
+    </mat-card-content>
+
+    <mat-card-content *ngIf="submitted" class="successContent">
+      <p class="successMessage mat-body-strong">Le dataset a été soumis avec succès</p>
+      <button mat-raised-button color="primary" (click)="reset()">Soumettre un autre dataset</button>
     </mat-card-content>
   </mat-card>
 </div>

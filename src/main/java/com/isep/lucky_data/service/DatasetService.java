@@ -99,7 +99,31 @@ public class DatasetService {
 
     }
 
-    public List<Dataset> getAllDatasets() {
-        return datasetRepository.findAll();
+    public List<Dataset> getAllDatasets(String orderBy) {
+        List<Dataset> datasets;
+        switch (orderBy) {
+            case "downloads desc":
+                datasets = this.datasetRepository.findAllByOrderByDownloadsDesc();
+                break;
+            case "downloads asc":
+                datasets = this.datasetRepository.findAllByOrderByDownloadsAsc();
+                break;
+            case "uploadedAt desc":
+                datasets = this.datasetRepository.findAllByOrderByUploadedAtDesc();
+                break;
+            case "uploadedAt asc":
+                datasets = this.datasetRepository.findAllByOrderByUploadedAtAsc();
+                break;
+            case "title asc":
+                datasets = this.datasetRepository.findAllByOrderByTitleAsc();
+                break;
+            case "title desc":
+                datasets = this.datasetRepository.findAllByOrderByTitleDesc();
+                break;
+            default:
+                datasets = this.datasetRepository.findAll();
+                break;
+        }
+        return datasets;
     }
 }

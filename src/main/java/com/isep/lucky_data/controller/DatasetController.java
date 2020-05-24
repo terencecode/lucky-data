@@ -92,8 +92,8 @@ public class DatasetController {
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/datasets")
     @ApiOperation(value = "Gets all datasets infos", authorizations = {@Authorization(value = "JWT")}, produces = "application/json")
-    public ResponseEntity<Collection<DatasetResponse>> getAllDatasets() {
-        List<Dataset> datasets = datasetService.getAllDatasets();
+    public ResponseEntity<Collection<DatasetResponse>> getAllDatasets(@RequestParam String orderBy) {
+        List<Dataset> datasets = datasetService.getAllDatasets(orderBy);
         DatasetToDatasetResponseConverter converter = new DatasetToDatasetResponseConverter();
         Collection<DatasetResponse> responses = converter.createFromEntities(datasets);
         return ResponseEntity.ok(responses);

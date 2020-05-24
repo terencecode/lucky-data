@@ -18,8 +18,8 @@ export class DatasetService {
     return this.http.get<Dataset>(environment.baseUrl + '/dataset/' + datasetId);
   }
 
-  public getDatasets(): Observable<Dataset[]> {
-    return this.http.get<Dataset[]>(environment.baseUrl + '/dataset/datasets');
+  public getDatasets(params?): Observable<Dataset[]> {
+    return this.http.get<Dataset[]>(environment.baseUrl + '/dataset/datasets', {params: params ? params : {orderBy: "uploadedAt desc"}});
   }
 
   public downloadFile(datasetId: string): Observable<any>{

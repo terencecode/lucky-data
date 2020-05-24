@@ -10,11 +10,11 @@ import {DatasetService} from "../../service/dataset.service";
   styleUrls: ['./dataset-upload.component.sass']
 })
 export class DatasetUploadComponent implements OnInit {
+  submitted: boolean;
   formGroup: FormGroup;
   formArray: FormArray;
   file: File;
-  allowedExtensions = ['csv', 'xls', 'xlxs', 'json', 'xml'];
-  matcher = new CustomErrorStateMatcher();
+  allowedExtensions = ['csv', 'xls', 'xlxs', 'xlsx', 'json', 'xml'];
 
   constructor(private fb: FormBuilder, private datasetService: DatasetService) {
     this.formArray = this.fb.array([
@@ -78,18 +78,21 @@ export class DatasetUploadComponent implements OnInit {
 
   fileTypeValidator(types: string[]): ValidatorFn {
     return (control: FormControl): {[key: string]: any} | null => {
-      const fileName = control.value;
-      if (fileName) {
-        const dotSplitName = fileName.split('.');
-        const extension = dotSplitName[dotSplitName.length - 1].toLowerCase();
-        if (!types.includes(extension)) {
-          return {
-            fileTypeValidator: true
-          };
+      const files : File[] = control.value;
+      if(files?.length) {
+        const fileName : string = files[0].name;
+        if (fileName) {
+          const dotSplitName = fileName.split('.');
+          const extension = dotSplitName[dotSplitName.length - 1].toLowerCase();
+          if (!types.includes(extension)) {
+            return {
+              fileTypeValidator: true
+            };
+          }
+          return null;
         }
         return null;
       }
-      return null;
     }
   }
 
@@ -140,6 +143,16 @@ export class DatasetUploadComponent implements OnInit {
       params['tag'] = optionalControls.get('tag').value;
     }
 
-    this.datasetService.uploadDataset(formData, params).subscribe(response => console.log(response), (error) => console.log(error));
+    this.datasetService.uploadDataset(formData, params).subscribe(response => {
+      this.submitted = true;
+    }, (error) => {
+      console.log(error);
+      this.reset();
+    });
+  }
+
+  reset() {
+    this.formGroup.reset();
+    this.submitted = false;
   }
 }
