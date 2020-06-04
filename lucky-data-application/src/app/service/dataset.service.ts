@@ -23,10 +23,14 @@ export class DatasetService {
   }
 
   public downloadFile(datasetId: string): Observable<any>{
-    return this.http.get(environment.baseUrl + '/dataset/download/' + datasetId, { responseType : "blob"  } );
+    return this.http.get(environment.baseUrl + '/dataset/download/' + datasetId, { observe: "response", responseType : "blob"  } );
   }
 
-  public uploadDataset(formData: FormData, params) {
-    return this.http.post(environment.baseUrl + '/dataset/upload', formData, {params: params});
+  public uploadDatasetByFile(formData: FormData, params) {
+    return this.http.post(environment.baseUrl + '/dataset/upload/file', formData, {params: params});
+  }
+
+  public uploadDatasetByApi(body) {
+    return this.http.post(environment.baseUrl + '/dataset/upload/api', body);
   }
 }

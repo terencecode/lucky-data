@@ -24,7 +24,7 @@
                 <input matInput placeholder="Ex. Banque de France" name="source" formControlName="source" required>
               </mat-form-field>
 
-              <mat-radio-group formControlName="dateRadio" required (change)="radioButtonChanged($event)" class="radioGroup">
+              <mat-radio-group formControlName="dateRadio" required (change)="dateRadioButtonChanged($event)" class="radioGroup">
                 <mat-radio-button value="unique" name="dateRadio" class="radioButtons">Date unique</mat-radio-button>
                 <mat-radio-button value="range" name="dateRadio" class="radioButtons">Durée</mat-radio-button>
               </mat-radio-group>
@@ -51,9 +51,78 @@
                 <mat-datepicker #datasetEndDatePicker></mat-datepicker>
               </mat-form-field>
 
-              <div class="uploadFile">
+              <mat-radio-group formControlName="fileRadio" required (change)="fileRadioButtonChanged($event)" class="radioGroup">
+                <mat-radio-button value="file" name="dateRadio" class="radioButtons">Fichier</mat-radio-button>
+                <mat-radio-button value="api" name="dateRadio" class="radioButtons">API</mat-radio-button>
+              </mat-radio-group>
+
+              <div class="uploadFile" *ngIf="formArray.get([0]).get('fileRadio').value == 'file'">
                 <input style="display: none" id="input-file-id" type="file" formControlName="file" (change)="fileChanged($event)" required [accept]="acceptedExtensions()">
                 <label for="input-file-id" class="mat-focus-indicator mat-raised-button mat-button-base mat-primary">{{file?.name || 'Sélectionner un fichier' }}</label>
+              </div>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('fileRadio').value == 'api'">
+                <mat-label>Url</mat-label>
+                <input matInput type="url" placeholder="Ex. https://api.insee.fr/entreprises/sirene/V3/siren" name="url" formControlName="url" required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('fileRadio').value == 'api'">
+                <mat-label>Nom du token</mat-label>
+                <input matInput placeholder="Ex. Bearer" name="tokenName" formControlName="tokenName" required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('fileRadio').value == 'api'">
+                <mat-label>Token</mat-label>
+                <input matInput placeholder="Ex. eb473a00-f2aa-3650-a2fc-000bb4f4498d" name="tokenValue" formControlName="tokenValue" required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('fileRadio').value == 'api'">
+                <mat-label>Méthode HTTP</mat-label>
+                <input matInput placeholder="Ex. GET, POST..." name="method" formControlName="method" required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field" *ngIf="formArray.get([0]).get('fileRadio').value == 'api'">
+                <mat-label>Type désiré</mat-label>
+                <input matInput placeholder="Ex. application/json, text/csv..." name="contentType" formControlName="contentType" required>
+              </mat-form-field>
+
+              <div class="validity field" *ngIf="formArray.get([0]).get('fileRadio').value == 'api'">
+                <mat-form-field appearance="outline" class="validityField">
+                  <mat-label>Validité</mat-label>
+                  <input type="number" matInput [formControl]="formArray.get([0]).get('validity').get('amount')">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="validityValue">
+                  <mat-label>Type de validité</mat-label>
+                  <mat-select [formControl]="formArray.get([0]).get('validity').get('type')">
+                    <mat-option *ngFor="let type of validityTypes" [value]="type.value">{{computeDisplayedValue(type.displayedValue)}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="field" *ngIf="formArray.get([0]).get('fileRadio').value == 'api'">
+                <div *ngFor="let item of paramsArray.controls; let i=index" class="apiParam">
+                  <mat-form-field appearance="outline" class="paramType">
+                    <mat-label>Type de paramètre</mat-label>
+                    <mat-select [formControl]="paramsArray.get([i]).get('type')">
+                      <mat-option *ngFor="let type of paramsTypes" [value]="type.value">{{type.displayedValue}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="paramName">
+                    <mat-label>Nom</mat-label>
+                    <input matInput [formControl]="paramsArray.get([i]).get('name')">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="paramValue">
+                    <mat-label>Valeur</mat-label>
+                    <input matInput [formControl]="paramsArray.get([i]).get('value')">
+                  </mat-form-field>
+                  <button mat-icon-button type="button" (click)="addNewParam(i)" class="addButton">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                  <button mat-icon-button type="button" (click)="deleteParam(i)" *ngIf="paramsArray.controls.length > 1" class="deleteButton">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
               </div>
 
             </div>

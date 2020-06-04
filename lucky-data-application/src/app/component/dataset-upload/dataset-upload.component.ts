@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {MatRadioChange} from "@angular/material/radio";
-import {CustomErrorStateMatcher} from "./CustomErrorStateMatcher";
 import {DatasetService} from "../../service/dataset.service";
 
 @Component({
@@ -15,18 +14,62 @@ export class DatasetUploadComponent implements OnInit {
   formArray: FormArray;
   file: File;
   allowedExtensions = ['csv', 'xls', 'xlxs', 'xlsx', 'json', 'xml'];
-
+  validityTypes = [{
+      value: 'day',
+      displayedValue: 'Jour'
+    },
+    {
+      value: 'week',
+      displayedValue: 'Semaine'
+    },
+    {
+      value: 'month',
+      displayedValue: 'Mois'
+    },
+    {
+      value: 'year',
+      displayedValue: 'Année'
+    }
+  ];
+  paramsTypes = [{
+      value: 'formData',
+      displayedValue: 'Form Data'
+    },
+    {
+      value: 'queryParams',
+      displayedValue: 'Query'
+    },
+    {
+      value: 'pathParams',
+      displayedValue: 'Path'
+    },
+    {
+      value: 'body',
+      displayedValue: 'Body'
+    }
+  ];
   constructor(private fb: FormBuilder, private datasetService: DatasetService) {
     this.formArray = this.fb.array([
       this.fb.group({
-        title: [''],
+        title: ['', [Validators.required]],
         description: ['', [Validators.required, Validators.max(5000)]],
         source: ['', [Validators.required]],
         dateRadio: ['unique', [Validators.required]],
         datasetDate: [''],
         datasetStartDate: [''],
         datasetEndDate: [''],
-        file: [null, [this.fileRequiredValidator, this.fileTypeValidator(this.allowedExtensions)]]
+        fileRadio: ['file', [Validators.required]],
+        file: [null, [this.fileRequiredValidator, this.fileTypeValidator(this.allowedExtensions)]],
+        url: [''],
+        tokenName: [''],
+        tokenValue: [''],
+        method: [''],
+        contentType: [''],
+        validity: this.fb.group({
+          amount: [''],
+          type: ['']
+        }),
+        params: this.fb.array([this.initParamRow()])
       }),
       this.fb.group({
         tag: ['']
@@ -46,7 +89,7 @@ export class DatasetUploadComponent implements OnInit {
     this.file = files[0];
   }
 
-  radioButtonChanged(event: MatRadioChange) {
+  dateRadioButtonChanged(event: MatRadioChange) {
     const radioButtonValue = event.value;
     const datasetDateControl = this.formArray.get([0]).get('datasetDate') as FormControl;
     const datasetStartDateControl = this.formArray.get([0]).get('datasetStartDate') as FormControl;
@@ -70,6 +113,46 @@ export class DatasetUploadComponent implements OnInit {
     }
 
     dateControls.forEach((control => {
+      control.markAsPristine();
+      control.markAsUntouched();
+      control.updateValueAndValidity();
+    }));
+  }
+
+  fileRadioButtonChanged(event: MatRadioChange) {
+    const radioButtonValue = event.value;
+    const fileControl = this.formArray.get([0]).get('file') as FormControl;
+    const urlControl = this.formArray.get([0]).get('url') as FormControl;
+    const tokenNameControl = this.formArray.get([0]).get('tokenName') as FormControl;
+    const tokenValueControl = this.formArray.get([0]).get('tokenValue') as FormControl;
+    const methodControl = this.formArray.get([0]).get('method') as FormControl;
+    const contentTypeControl = this.formArray.get([0]).get('contentType') as FormControl;
+    const controls: AbstractControl[] = [fileControl, urlControl, tokenNameControl, tokenValueControl, methodControl, contentTypeControl];
+
+    /*const params = this.formArray.get([0]).get('params') as FormArray;
+    Array.prototype.push.apply(controls, params.controls);*/
+
+    console.log(controls);
+    controls.forEach((control => {
+      control.clearValidators();
+    }));
+
+    switch (radioButtonValue) {
+      case('file'):
+        fileControl.setValidators([this.fileRequiredValidator, this.fileTypeValidator(this.allowedExtensions)]);
+        break;
+      case('api'):
+        urlControl.setValidators(Validators.required);
+        tokenNameControl.setValidators(Validators.required);
+        tokenValueControl.setValidators(Validators.required);
+        methodControl.setValidators(Validators.required);
+        contentTypeControl.setValidators(Validators.required);
+        break;
+      default:
+        break;
+    }
+
+    controls.forEach((control => {
       control.markAsPristine();
       control.markAsUntouched();
       control.updateValueAndValidity();
@@ -118,9 +201,37 @@ export class DatasetUploadComponent implements OnInit {
     return acceptedExtensions;
   }
 
+  initParamRow() {
+    return this.fb.group({
+      type: [''],
+      name: [''],
+      value: ['']
+    });
+  }
+
+  get paramsArray() {
+    return this.formArray.get([0]).get('params') as FormArray;
+  }
+
+  addNewParam(index: number) {
+    this.paramsArray.insert(index + 1, this.initParamRow());
+  }
+
+  deleteParam(index: number) {
+    this.paramsArray.removeAt(index);
+  }
+
+  computeDisplayedValue(displayedValue: string): string {
+    if (this.formArray.get([0]).get('validity').get('amount').value > 1 && displayedValue.charAt(displayedValue.length - 1).toLowerCase() != 's') {
+      return displayedValue + "s";
+    }
+    else {
+      return displayedValue;
+    }
+  }
+
   onSubmit() {
     const formData: FormData = new FormData();
-    formData.append("file", this.file);
     const mandatoryControls = this.formArray.get([0]);
     const optionalControls = this.formArray.get([1]);
     const params = {
@@ -143,12 +254,74 @@ export class DatasetUploadComponent implements OnInit {
       params['tag'] = optionalControls.get('tag').value;
     }
 
-    this.datasetService.uploadDataset(formData, params).subscribe(response => {
-      this.submitted = true;
-    }, (error) => {
-      console.log(error);
-      this.reset();
-    });
+    if(mandatoryControls.get('fileRadio').value === 'file') {
+      formData.append("file", this.file);
+      this.datasetService.uploadDatasetByFile(formData, params).subscribe(response => {
+        this.submitted = true;
+      }, (error) => {
+        console.log(error);
+        this.reset();
+      });
+    } else if(mandatoryControls.get('fileRadio').value === 'api') {
+      const datasetAPIInfo = {};
+      datasetAPIInfo['url'] = mandatoryControls.get('url').value;
+      datasetAPIInfo['tokenName'] = mandatoryControls.get('tokenName').value;
+      datasetAPIInfo['tokenValue'] = mandatoryControls.get('tokenValue').value;
+      datasetAPIInfo['method'] = mandatoryControls.get('method').value;
+      datasetAPIInfo['contentType'] = mandatoryControls.get('contentType').value;
+
+      const validity = {
+        amount: mandatoryControls.get('contentType').get('amount')?.value,
+        type: mandatoryControls.get('contentType').get('type')?.value
+      }
+      if (validity.amount && validity.type) {
+        const date = new Date();
+        const millis = date.getTime();
+        switch (validity.type) {
+          case 'day':
+            date.setDate(date.getDate() + validity.amount);
+            break;
+          case 'week':
+            date.setDate(date.getDate() + validity.amount * 7);
+            break;
+          case 'month':
+            date.setMonth(date.getMonth() + validity.amount);
+            break;
+          case 'year':
+            date.setFullYear(date.getFullYear() + validity.amount);
+            break;
+          default:
+            break;
+        }
+        datasetAPIInfo['validity'] = date.getTime() - millis;
+      }
+
+      let type: string;
+      let name: string;
+      let value;
+      for (let control of this.paramsArray.controls) {
+        type = control.get('type').value;
+        name = (control.get('name').value as string).trim();
+        value = control.get('value').value
+        if (isNaN(value) && typeof value === 'string') {
+          value = value.trim();
+        } else if (!isNaN(value)) {
+          value = parseInt(value);
+        }
+        if (type && name && value) {
+          datasetAPIInfo[type] = datasetAPIInfo[type] ? datasetAPIInfo[type] : {};
+          datasetAPIInfo[type][name] = value;
+        }
+      }
+      params['datasetAPIInfo'] = datasetAPIInfo;
+      console.log(params);
+      this.datasetService.uploadDatasetByApi(params).subscribe(response => {
+        this.submitted = true;
+      }, (error) => {
+        console.log(error);
+        this.reset();
+      });
+    }
   }
 
   reset() {

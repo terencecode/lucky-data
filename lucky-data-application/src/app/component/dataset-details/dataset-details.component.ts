@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {DatasetService} from "../../service/dataset.service";
 import {Dataset} from "../../model/dataset";
@@ -21,9 +20,18 @@ export class DatasetDetailsComponent implements OnInit {
     });
   }
   download() {
-    this.datasetService.downloadFile('1').subscribe(
+    this.datasetService.downloadFile(this.dataset.id.toString()).subscribe(
       response => {
-        window.open(window.URL.createObjectURL(response))
+        let url = window.URL.createObjectURL(new Blob([response.body], {type: this.dataset.contentType}));
+        const a = document.createElement('a');
+        a.href = url
+        let contentDisposition = response.headers.get('content-disposition');
+        console.log(contentDisposition);
+        let filename = contentDisposition.split(';')[1].split('filename')[1].split('=')[1].trim().replace(/\"/g, '');
+        console.log(filename);
+        a.download = filename;
+        console.log(a);
+        a.click();
         this.fetchDataset(this.dataset.id);
       },
         error => console.log('Error downloading the file'),

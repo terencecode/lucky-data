@@ -1,5 +1,6 @@
 package com.isep.lucky_data.payload.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ public class DatasetRequest {
     @NotNull
     @NotBlank
     @ApiParam(value = "The title of the dataset", example = "Air Pollution in Seoul", required = true)
+    @ApiModelProperty(value = "The title of the dataset", example = "Air Pollution in Seoul", required = true, position = 0)
     private String title;
 
     @NotNull

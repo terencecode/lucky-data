@@ -7,6 +7,7 @@ import com.isep.lucky_data.converter.DatasetToDatasetResponseConverter;
 import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.model.Dataset;
 import com.isep.lucky_data.model.DatasetFile;
+import com.isep.lucky_data.payload.request.DatasetAPIRequest;
 import com.isep.lucky_data.payload.request.DatasetRequest;
 import com.isep.lucky_data.payload.response.DatasetDetailsResponse;
 import com.isep.lucky_data.payload.response.DatasetResponse;
@@ -15,6 +16,7 @@ import com.isep.lucky_data.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import org.apache.tika.mime.MimeTypeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
@@ -46,11 +49,11 @@ public class DatasetController {
     private UserService userService;
 
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
-    @PostMapping("/upload")
+    @PostMapping("/upload/file")
     @ApiOperation(value = "Upload a dataset", authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<URI> addDataset(@RequestParam("file") MultipartFile file, DatasetRequest datasetRequest, @CurrentUser UserPrincipal userPrincipal) {
         ApplicationUser user = userService.getCurrentUser(userPrincipal);
-        Dataset dataset = datasetService.storeFile(file, datasetRequest, user);
+        Dataset dataset = datasetService.addDatasetByFile(file, datasetRequest, user);
 
         URI fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download/")
@@ -60,17 +63,32 @@ public class DatasetController {
     }
 
     @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
+    @PostMapping("/upload/api")
+    @ApiOperation(value = "Upload a dataset by API", authorizations = {@Authorization(value = "JWT")})
+    public ResponseEntity addDatasetAPI(@RequestBody DatasetAPIRequest datasetAPIRequest, @CurrentUser UserPrincipal userPrincipal) throws SSLException, MimeTypeException {
+        ApplicationUser user = userService.getCurrentUser(userPrincipal);
+        Dataset dataset = datasetService.addDatasetByAPI(datasetAPIRequest, user);
+
+        /*URI fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download/")
+                .path(dataset.getId().toString()).build().toUri();*/
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
     @GetMapping("/download/{datasetId}")
     @ApiOperation(value = "Download the dataset file", authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<Resource> downloadDatasetFile(@PathVariable Long datasetId) {
         // Load file from database
         DatasetFile datasetFile = datasetService.getFile(datasetId);
 
-        Resource byteArrayResource = new ByteArrayResource(datasetService.getFileContent(datasetFile));
+        Resource byteArrayResource = new ByteArrayResource(datasetService.getFileContent(datasetFile, datasetId));
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(datasetFile.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + datasetFile.getName() + "\"")
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
                 .body(byteArrayResource);
     }
 
@@ -82,7 +100,7 @@ public class DatasetController {
         Dataset dataset = datasetService.getDataset(datasetId, user);
         DatasetToDatasetDetailsResponseConverter converter = new DatasetToDatasetDetailsResponseConverter();
         DatasetDetailsResponse response = converter.convertFromEntity(dataset);
-        DatasetFile datasetFile = datasetService.getFile(datasetId);
+        DatasetFile datasetFile = dataset.getDatasetFile();
         response.setFileName(datasetFile.getName());
         response.setContentType(datasetFile.getType());
         response.setSize(datasetService.getFileSize(datasetFile));

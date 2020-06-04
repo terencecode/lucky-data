@@ -57,11 +57,20 @@ public class Dataset {
     @Column(name = "tag")
     private String tag;
 
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "dataset_file_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dataset_file_foreign_key"))
+    @NotNull
+    private DatasetFile datasetFile;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "dataset_api_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dataset_api_foreign_key"))
+    private DatasetApi datasetApi;
+
     @Column(name = "downloads", nullable = false)
     @NotNull
     private Long downloads = 0L;
 
-    @OneToMany(mappedBy = "dataset")
+    @OneToMany(mappedBy = "dataset", fetch = FetchType.LAZY)
     private Set<DatasetConsultation> datasetConsultations;
 
     public Dataset() {}
@@ -167,6 +176,22 @@ public class Dataset {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public DatasetFile getDatasetFile() {
+        return datasetFile;
+    }
+
+    public void setDatasetFile(DatasetFile datasetFile) {
+        this.datasetFile = datasetFile;
+    }
+
+    public DatasetApi getDatasetApi() {
+        return datasetApi;
+    }
+
+    public void setDatasetApi(DatasetApi datasetApi) {
+        this.datasetApi = datasetApi;
     }
 
     public Long getDownloads() {

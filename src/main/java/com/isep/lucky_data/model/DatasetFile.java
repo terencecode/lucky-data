@@ -2,9 +2,9 @@ package com.isep.lucky_data.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Blob;
+import java.util.List;
 
 @Entity
 public class DatasetFile {
@@ -27,22 +27,18 @@ public class DatasetFile {
     @Lob
     @Column(name="data", nullable = false)
     @NotNull
-    //@Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.LAZY)
     private Blob data;
 
-
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "dataset_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dataset_foreign_key"))
-    @NotNull
-    private Dataset dataset;
+    @OneToMany(mappedBy = "datasetFile", fetch = FetchType.LAZY)
+    private List<DatasetFileHistory> datasetFileHistories;
 
     public DatasetFile(){}
 
-    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull Blob data, @NotNull Dataset dataset) {
+    public DatasetFile(@NotNull @NotBlank String name, @NotNull @NotBlank String type, @NotNull Blob data) {
         this.name = name;
         this.type = type;
         this.data = data;
-        this.dataset = dataset;
     }
 
     public Long getId() {
@@ -75,13 +71,5 @@ public class DatasetFile {
 
     public void setData(Blob data) {
         this.data = data;
-    }
-
-    public Dataset getDataset() {
-        return dataset;
-    }
-
-    public void setDataset(Dataset dataset) {
-        this.dataset = dataset;
     }
 }

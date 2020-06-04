@@ -6,7 +6,7 @@
   align-items: center
   .formCard
     width: 60%
-    max-width: 800px
+    max-width: 1000px
     .fields
       display: flex
       flex-direction: column
@@ -14,9 +14,6 @@
       align-items: center
       .field
         width: 70%
-        .example-additional-selection
-          opacity: 0.75
-          font-size: 0.75em
       .radioGroup
         display: flex
         flex-direction: row
@@ -26,6 +23,21 @@
         margin: 14px 0 26px 0
       .uploadFile
         margin: 20px 0 26px 0
+      .validity
+        display: flex
+        flex-direction: row
+        justify-content: space-evenly
+      .apiParam
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: baseline
+        &>.paramType
+          width: 25%
+        &>.paramName
+          width: 20%
+        &>.paramValue
+          width: 30%
 
     .successContent
       display: flex
