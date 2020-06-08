@@ -18,6 +18,8 @@ export class RegisterFormComponent implements OnInit {
   hide2 = true;
   loginError = false;
   errorMess = '';
+  passwordRegex = /^((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&\\/=?_.,:;\\\\-])|(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%&\\/=?_.,:;\\\\-])|(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&\\/=?_.,:;\\\\-])).{12,30}$/;
+  oldpasswordRegex = /^(?=\\D*\\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -46,7 +48,7 @@ export class RegisterFormComponent implements OnInit {
       ])],
       password: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^(?=\D*\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/)
+        Validators.pattern(this.passwordRegex)
       ])],
       passwordConfirm: ['', Validators.required],
       acceptTerms: [false, Validators.requiredTrue]
@@ -85,7 +87,6 @@ export class RegisterFormComponent implements OnInit {
             this.authService.login(this.form.value.email, this.form.value.password)
               .subscribe(
                 () => {
-                  console.log('User is logged in');
                   this.router.navigateByUrl('/datasets');
                 },
                 (error) => {

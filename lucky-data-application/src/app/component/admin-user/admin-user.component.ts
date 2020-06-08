@@ -50,9 +50,23 @@ export class AdminUserComponent implements OnInit {
     this.adminService.deleteUser(user.email)
       .subscribe(
         () => {
-          console.log('user deleted');
           this.updateSuccess = true;
           this.successMess = 'Utilisateur supprimé';
+          this.ngOnInit();
+        },
+        (error) => {
+          console.log(error);
+          this.updateError = true;
+          this.errorMess = 'Une erreur interne est survenue, veuillez réessayer';
+        });
+  }
+
+  EditRole(addRole: boolean, role: string, user: User){
+    this.adminService.editUserRole(addRole, role, user.email)
+      .subscribe(
+        () => {
+          this.updateSuccess = true;
+          this.successMess = 'Le rôle de cet utilisateur a été modifié';
           this.ngOnInit();
         },
         (error) => {

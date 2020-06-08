@@ -1,21 +1,26 @@
 package com.isep.lucky_data.service;
 
 import com.isep.lucky_data.configuration.UserPrincipal;
+import com.isep.lucky_data.exception.BadRequestException;
 import com.isep.lucky_data.exception.UserNotFoundException;
 import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.payload.request.UserRequest;
 import com.isep.lucky_data.repository.ApplicationUserRepository;
+import com.isep.lucky_data.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     @Autowired
     private ApplicationUserRepository applicationUserRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     public ApplicationUser getCurrentUser(UserPrincipal userPrincipal) {
 
@@ -36,6 +41,12 @@ public class UserService {
         } else throw new UserNotFoundException();
     }
 
+    public ApplicationUser findByEmail(String email) {
+        if(applicationUserRepository.existsByEmail(email)) {
+            return applicationUserRepository.findByEmail(email).get();
+        } else throw new UserNotFoundException();
+    }
+
     public void updateCurrentUser(UserRequest userRequest, UserPrincipal userPrincipal) {
         Optional<ApplicationUser> user = applicationUserRepository.findById(userPrincipal.getId());
 
@@ -52,4 +63,21 @@ public class UserService {
         applicationUser.setEmail(userRequest.getEmail() == null ? applicationUser.getEmail() : userRequest.getEmail());
         applicationUser.setPassword(userRequest.getPassword() == null ? applicationUser.getPassword() : userRequest.getPassword());
     }
+
+    public void AddUserRole(Integer roleId, String email) {
+        if(roleId != -1) {
+            ApplicationUser user;
+            user = findByEmail(email);
+            roleRepository.addUserRole(user.getId(), roleId);
+        } else throw new BadRequestException("Wrong Role");
+    }
+
+    public void DeleteUserRole(Integer roleId, String email) {
+        if(roleId != -1) {
+            ApplicationUser user;
+            user = findByEmail(email);
+            roleRepository.deleteUserRole(user.getId(), roleId);
+        } else throw new BadRequestException("Wrong Role");
+    }
+
 }

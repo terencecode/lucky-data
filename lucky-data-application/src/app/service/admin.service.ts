@@ -19,4 +19,8 @@ export class AdminService {
     return this.http.delete(environment.baseUrl + '/user/delete/' + email);
   }
 
+  public editUserRole(addRole: boolean, role: string, email: string) {
+    return this.http.post(environment.baseUrl + '/user/editRole', {addRole, role, email});
+  }
+
 }

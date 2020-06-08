@@ -13,9 +13,7 @@ export class AuthService {
 
   cachedRequests: Array<HttpRequest<any>> = [];
 
-  constructor(private http: HttpClient, private userService: UserService) {
-
-  }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   login(email: string, password: string) {
     return this.http.post(environment.baseUrl + '/auth', {email, password})
@@ -40,6 +38,8 @@ export class AuthService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('expiresAt');
     localStorage.removeItem('roles');
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
   }
 
   public isLoggedIn() {
@@ -65,9 +65,11 @@ export class AuthService {
     // be called after the token is refreshed
   }
 
-  private setRoles(){
+  private setUserData(){
     this.userService.getUserInfo().subscribe(user => {
       localStorage.setItem('roles', user.role.toString());
+      localStorage.setItem('firstName', user.firstName);
+      localStorage.setItem('lastName', user.lastName);
     });
   }
 
@@ -76,6 +78,6 @@ export class AuthService {
 
     localStorage.setItem('accessToken', authResult.accessToken);
     localStorage.setItem('expiresAt', JSON.stringify(expiresAt.valueOf()));
-    this.setRoles();
+    this.setUserData();
   }
 }

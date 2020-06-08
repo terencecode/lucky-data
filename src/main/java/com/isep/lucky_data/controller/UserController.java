@@ -4,6 +4,7 @@ import com.isep.lucky_data.configuration.CurrentUser;
 import com.isep.lucky_data.configuration.UserPrincipal;
 import com.isep.lucky_data.converter.UserToUserResponseConverter;
 import com.isep.lucky_data.model.ApplicationUser;
+import com.isep.lucky_data.payload.request.EditRoleRequest;
 import com.isep.lucky_data.payload.request.UserRequest;
 import com.isep.lucky_data.payload.response.UserResponse;
 import com.isep.lucky_data.service.UserService;
@@ -55,12 +56,35 @@ public class UserController {
         return ResponseEntity.ok(responses);
     }
 
-    @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @Transactional
     @DeleteMapping("/delete/{email}")
     @ApiOperation(value = "Delete user" , authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<?> deleteUser(@PathVariable("email") String email) {
         userService.deleteByEmail(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @Transactional
+    @PostMapping("/editRole")
+    @ApiOperation(value = "Edit role to user" , authorizations = {@Authorization(value = "JWT")})
+    public ResponseEntity<?> editUserRole(@RequestBody EditRoleRequest editRoleRequest) {
+        Integer roleId = -1;
+        switch (editRoleRequest.getRole()){
+            case "ROLE_USER":  roleId = 1;
+                break;
+            case "ROLE_DATA_EXPERT":  roleId = 2;
+                break;
+            case "ROLE_ADMIN":  roleId = 3;
+                break;
+        }
+
+        if (editRoleRequest.getaddRole()) {
+            userService.AddUserRole(roleId, editRoleRequest.getEmail());
+        } else {
+            userService.DeleteUserRole(roleId, editRoleRequest.getEmail());
+        }
         return ResponseEntity.ok().build();
     }
 }

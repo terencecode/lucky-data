@@ -22,6 +22,8 @@ export class ProfileComponent implements OnInit {
   successMess = '';
   formEnable = false;
   buttonText = 'Modifier mon profil';
+  passwordRegex = /^((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&\\/=?_.,:;\\\\-])|(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%&\\/=?_.,:;\\\\-])|(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&\\/=?_.,:;\\\\-])).{12,30}$/;
+  oldpasswordRegex = /^(?=\\D*\\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/;
 
   constructor(private fb: FormBuilder, private userService: UserService){
 
@@ -43,7 +45,7 @@ export class ProfileComponent implements OnInit {
         Validators.pattern('^[a-z0-9._%+-]+@lcl.fr$')
       ])],
       password: ['', Validators.compose([
-        Validators.pattern(/^(?=\D*\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/)
+        Validators.pattern(this.passwordRegex)
       ])],
       passwordConfirm: '',
     }, {
@@ -122,7 +124,6 @@ export class ProfileComponent implements OnInit {
       this.userService.updateUser(firstName, lastName, email, password)
         .subscribe(
           () => {
-            console.log('user updated');
             this.updateSuccess = true;
             this.successMess = 'Vos informations ont bien été modifiées';
             this.getUserInfo();

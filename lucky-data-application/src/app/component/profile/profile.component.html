@@ -26,11 +26,11 @@
 
         <mat-form-field class="full-width">
           <mat-label>Mot de passe <span *ngIf="formEnable">(seulement si modification)</span></mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Minimum 8 caractères, 1 majuscule et 1 chiffre" name="password" formControlName="password">
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Minimum 12 caractères dont 3 types différents" name="password" formControlName="password">
           <button *ngIf="formEnable" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          <mat-error *ngIf="this.form.controls.password.errors" class="invalid">Le mot de passe doit comporter minimum 8 caractères, 1 majuscule et 1 chiffre</mat-error>
+          <mat-error *ngIf="this.form.controls.password.errors" class="invalid">Le mot de passe doit comporter minimum 12 caractères dont 3 de types différents parmi les suivants : majuscule, minuscule, chiffre, caractère spécial</mat-error>
         </mat-form-field>
 
         <mat-form-field class="full-width check" *ngIf="formEnable">
@@ -43,8 +43,8 @@
         </mat-form-field>
 
         <div class="buttons">
-          <button mat-button (click)="ChangeStateForm()" >{{buttonText}}</button>
-          <button mat-button *ngIf="formEnable" (click)="update()" class="updateButton">Enregistrer</button>
+          <button mat-stroked-button color="primary" (click)="ChangeStateForm()" >{{buttonText}}</button>
+          <button mat-stroked-button color="primary" *ngIf="formEnable" (click)="update()" class="updateButton">Enregistrer</button>
 
           <p class="admin">Pour toutes questions ou demandes particulières : </p>
           <button mat-raised-button color="primary" onclick="window.location = 'mailto:lucky-data@gmail.com';">Contacter un administrateur</button>

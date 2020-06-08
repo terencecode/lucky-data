@@ -11,6 +11,8 @@ import {UserService} from '../../service/user.service';
 
 export class NavbarComponent implements OnInit {
 
+  name = '';
+
   constructor(private authService: AuthService,  private router: Router, private userService: UserService) { }
 
   public isLoggedIn() {
@@ -18,7 +20,6 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(){
-    console.log('User is logged out');
     this.authService.logout();
     this.router.navigateByUrl('/');
   }
@@ -30,6 +31,8 @@ export class NavbarComponent implements OnInit {
     return false;
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+      this.name = localStorage.getItem('lastName').toString().charAt(0) + '. ' + localStorage.getItem('firstName').toString();
+  }
 
 }

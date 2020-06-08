@@ -65,20 +65,20 @@
               </button>
               <mat-menu #matEditRole="matMenu" xPosition="before">
 
-                <button mat-menu-item *ngIf="!isExpertRole(user.role)">
+                <button mat-menu-item *ngIf="!isExpertRole(user.role)" (click)="EditRole(true, 'ROLE_DATA_EXPERT', user)">
                   <mat-icon>add_circle</mat-icon>
                   <span>Passer expert data</span>
                 </button>
-                <button mat-menu-item *ngIf="isExpertRole(user.role)">
+                <button mat-menu-item *ngIf="isExpertRole(user.role)" (click)="EditRole(false, 'ROLE_DATA_EXPERT', user)">
                   <mat-icon>remove_circle</mat-icon>
                   <span>Supprimer rôle expert data</span>
                 </button>
 
-                <button mat-menu-item *ngIf="!isAdminRole(user.role)">
+                <button mat-menu-item *ngIf="!isAdminRole(user.role)" (click)="EditRole(true, 'ROLE_ADMIN', user)">
                   <mat-icon>add_circle</mat-icon>
                   <span>Passer administrateur</span>
                 </button>
-                <button mat-menu-item *ngIf="isAdminRole(user.role)">
+                <button mat-menu-item *ngIf="isAdminRole(user.role)" (click)="EditRole(false, 'ROLE_ADMIN', user)">
                   <mat-icon>remove_circle</mat-icon>
                   <span>Supprimer rôle administrateur</span>
                 </button>

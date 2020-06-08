@@ -1,4 +1,6 @@
 <mat-toolbar color="primary" class="navbar mat-elevation-z6">
+  <img id="logoLcl" src="'../../../assets/logo/logo_lcl2.png">
+
   <a routerLink="/" mat-button>Accueil</a>
 
   <a *ngIf="isLoggedIn()" routerLink="/datasets" mat-button>Datasets</a>
@@ -20,6 +22,7 @@
   </mat-menu>
 
   <span class="space-fill"></span>
+  <span *ngIf="isLoggedIn()" id="name">{{name}}</span>
 
   <a *ngIf="isLoggedIn()" mat-icon-button [matMenuTriggerFor]="beforeMenu" aria-label="Mon compte icone">
     <mat-icon>person</mat-icon>
