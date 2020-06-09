@@ -22,7 +22,9 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
-    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ApplicationUser getCurrentUser(UserPrincipal userPrincipal) {
 
