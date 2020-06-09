@@ -34,6 +34,10 @@ export class AuthService {
     });
   }
 
+  checkUserExists(email: string) {
+    return this.http.get(environment.baseUrl + '/auth/resetPasswordEmail/' + email);
+  }
+
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('expiresAt');

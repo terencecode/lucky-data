@@ -83,7 +83,6 @@ export class RegisterFormComponent implements OnInit {
         this.form.value.password, this.form.value.department, 'user')
         .subscribe(
           () => {
-            console.log('User is register');
             this.authService.login(this.form.value.email, this.form.value.password)
               .subscribe(
                 () => {

@@ -21,8 +21,10 @@ import org.springframework.stereotype.Service;
 
 import javax.management.relation.RoleNotFoundException;
 import java.net.URI;
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
@@ -50,15 +52,12 @@ public class AuthenticationService {
 
     public ApiResponse registerUser(SignUpRequest signUpRequest, URI location) {
 
-        if(applicationUserRepository.existsByEmail(signUpRequest.getEmail())) {
+        if(checkUserExists(signUpRequest.getEmail())) {
             return new ApiResponse(false, "Email Address already in use!");
         }
 
         Long userId;
-
         userId = registerUser(signUpRequest);
-
-
         location = (fromCurrentContextPath().path("/users/{id}")
                 .buildAndExpand(userId).toUri());
 
@@ -111,4 +110,41 @@ public class AuthenticationService {
     public boolean checkEmailAvailability (String email) {
         return !applicationUserRepository.findByEmail(email).isPresent();
     }
+
+    public boolean checkUserExists(String email) {
+        return applicationUserRepository.existsByEmail(email);
+    }
+
+    public String setRandomPassword(ApplicationUser user) {
+        String newPassword = generatePassword(12);
+        user.setPassword(newPassword);
+        applicationUserRepository.save(user);
+        applicationUserRepository.flush();
+        return newPassword;
+    }
+
+    private String generatePassword (int length) {
+        if (length < 4) { length = 12; }
+
+        final char[] lowercase = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        final char[] uppercase = "ABCDEFGJKLMNPRSTUVWXYZ".toCharArray();
+        final char[] numbers = "0123456789".toCharArray();
+        final char[] symbols = "^$?!@#%&".toCharArray();
+        final char[] allAllowed = "abcdefghijklmnopqrstuvwxyzABCDEFGJKLMNPRSTUVWXYZ0123456789^$?!@#%&".toCharArray();
+
+        Random random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
+
+        for (int i = 0; i < length-4; i++) {
+            password.append(allAllowed[random.nextInt(allAllowed.length)]);
+        }
+
+        //Ensure password policy is met by inserting required random chars in random positions
+        password.insert(random.nextInt(password.length()), lowercase[random.nextInt(lowercase.length)]);
+        password.insert(random.nextInt(password.length()), uppercase[random.nextInt(uppercase.length)]);
+        password.insert(random.nextInt(password.length()), numbers[random.nextInt(numbers.length)]);
+        password.insert(random.nextInt(password.length()), symbols[random.nextInt(symbols.length)]);
+        return password.toString();
+    }
+
 }

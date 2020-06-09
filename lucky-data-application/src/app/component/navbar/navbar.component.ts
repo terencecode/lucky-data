@@ -31,8 +31,14 @@ export class NavbarComponent implements OnInit {
     return false;
   }
 
-  ngOnInit(): void {
+  setName() {
+    if(this.isLoggedIn()) {
       this.name = localStorage.getItem('lastName').toString().charAt(0) + '. ' + localStorage.getItem('firstName').toString();
+      return true;
+    }
+    return false;
   }
+
+  ngOnInit(): void {}
 
 }

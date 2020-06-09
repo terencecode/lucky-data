@@ -22,7 +22,7 @@
   </mat-menu>
 
   <span class="space-fill"></span>
-  <span *ngIf="isLoggedIn()" id="name">{{name}}</span>
+  <span *ngIf="setName()" id="name">{{name}}</span>
 
   <a *ngIf="isLoggedIn()" mat-icon-button [matMenuTriggerFor]="beforeMenu" aria-label="Mon compte icone">
     <mat-icon>person</mat-icon>
