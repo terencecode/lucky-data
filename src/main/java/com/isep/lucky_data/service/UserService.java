@@ -8,6 +8,7 @@ import com.isep.lucky_data.payload.request.UserRequest;
 import com.isep.lucky_data.repository.ApplicationUserRepository;
 import com.isep.lucky_data.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
 
     public ApplicationUser getCurrentUser(UserPrincipal userPrincipal) {
 
@@ -61,7 +63,7 @@ public class UserService {
         applicationUser.setFirstName(userRequest.getFirstName() == null ? applicationUser.getFirstName() : userRequest.getFirstName());
         applicationUser.setLastName(userRequest.getLastName() == null ? applicationUser.getLastName() : userRequest.getLastName());
         applicationUser.setEmail(userRequest.getEmail() == null ? applicationUser.getEmail() : userRequest.getEmail());
-        applicationUser.setPassword(userRequest.getPassword() == null ? applicationUser.getPassword() : userRequest.getPassword());
+        applicationUser.setPassword(userRequest.getPassword() == null ? applicationUser.getPassword() : passwordEncoder.encode(userRequest.getPassword()));
     }
 
     public void AddUserRole(Integer roleId, String email) {
