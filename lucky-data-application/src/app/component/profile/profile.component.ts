@@ -42,7 +42,8 @@ export class ProfileComponent implements OnInit {
       ])],
       email: ['', Validators.compose([
         Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@lcl.fr$')
+        Validators.email
+        //Validators.pattern('^[a-z0-9._%+-]+@lcl.fr$')
       ])],
       password: ['', Validators.compose([
         Validators.pattern(this.passwordRegex)

@@ -34,10 +34,6 @@ export class AuthService {
     });
   }
 
-  checkUserExists(email: string) {
-    return this.http.get(environment.baseUrl + '/auth/resetPasswordEmail/' + email);
-  }
-
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('expiresAt');
@@ -48,6 +44,20 @@ export class AuthService {
 
   public isLoggedIn() {
     return moment().isBefore(this.getExpiration());
+  }
+
+  isAdmin() {
+    if (this.isLoggedIn() && localStorage.getItem('roles') !== null) {
+      return localStorage.getItem('roles').indexOf('ROLE_ADMIN') !== -1;
+    }
+    return false;
+  }
+
+  isDataExpert() {
+    if (this.isLoggedIn() && localStorage.getItem('roles') !== null) {
+      return localStorage.getItem('roles').indexOf('ROLE_DATA_EXPERT') !== -1;
+    }
+    return false;
   }
 
   isLoggedOut() {
@@ -67,6 +77,10 @@ export class AuthService {
   public retryFailedRequests(): void {
     // retry the requests. this method can
     // be called after the token is refreshed
+  }
+
+  resetPasswordEmail(email: string) {
+    return this.http.get(environment.baseUrl + '/auth/resetPasswordEmail/' + email);
   }
 
   private setUserData(){

@@ -25,14 +25,15 @@ export class NavbarComponent implements OnInit {
   }
 
   isAdmin() {
-    if (this.isLoggedIn() && localStorage.getItem("roles") !== null) {
-      return localStorage.getItem('roles').indexOf('ROLE_ADMIN') !== -1;
-    }
-    return false;
+    return this.authService.isAdmin();
+  }
+
+  isDataExpert() {
+    return this.authService.isDataExpert();
   }
 
   setName() {
-    if(this.isLoggedIn()) {
+    if(this.isLoggedIn() && localStorage.getItem('lastName') !== null && localStorage.getItem('firstName') !== null) {
       this.name = localStorage.getItem('lastName').toString().charAt(0) + '. ' + localStorage.getItem('firstName').toString();
       return true;
     }

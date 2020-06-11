@@ -59,11 +59,6 @@ public class AuthenticationController {
         return available ? ResponseEntity.ok().body(available) : new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @GetMapping("/checkUserExists/{email}")
-    public ResponseEntity<?> checkUserExists(@PathVariable("email") String email) {
-        return authenticationService.checkUserExists(email) ? ResponseEntity.ok().body(true) : new ResponseEntity<>(HttpStatus.CONFLICT);
-    }
-
     @GetMapping("/resetPasswordEmail/{email}")
     public ResponseEntity<?> resetPasswordEmail(@PathVariable("email") String email) {
         ApplicationUser user;

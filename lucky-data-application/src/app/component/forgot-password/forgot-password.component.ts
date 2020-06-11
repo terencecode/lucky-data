@@ -30,7 +30,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   resetPassword() {
     if (this.form.valid) {
-      this.authService.checkUserExists(this.form.value.email).subscribe(
+      this.authService.resetPasswordEmail(this.form.value.email).subscribe(
         () => {
           // Mettre en place l'envoi de mail
           this.emailSucces = true;

@@ -115,9 +115,8 @@ public class AuthenticationService {
 
     public String setRandomPassword(ApplicationUser user) {
         String newPassword = generatePassword(12);
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         applicationUserRepository.save(user);
-        applicationUserRepository.flush();
         return newPassword;
     }
 

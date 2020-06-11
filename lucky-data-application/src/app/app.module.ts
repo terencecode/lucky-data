@@ -22,6 +22,7 @@ import { DatasetTileComponent } from './component/dataset-tile/dataset-tile.comp
 import { DatasetUploadComponent } from './component/dataset-upload/dataset-upload.component';
 import { AdminUserComponent } from './component/admin-user/admin-user.component';
 import { FileControlValueAccessor } from './accessor/file-control-value-accessor';
+import { AdminDatasetComponent } from './component/admin-dataset/admin-dataset.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { FileControlValueAccessor } from './accessor/file-control-value-accessor
     DatasetTileComponent,
     DatasetUploadComponent,
     AdminUserComponent,
-    FileControlValueAccessor
+    FileControlValueAccessor,
+    AdminDatasetComponent
   ],
   imports: [
     BrowserModule,

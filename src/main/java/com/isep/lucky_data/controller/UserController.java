@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @Secured({"ROLE_USER", "ROLE_DATA_EXPERT", "ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     @GetMapping("/users")
     @ApiOperation(value = "Gets all users" , authorizations = {@Authorization(value = "JWT")})
     public ResponseEntity<Collection<UserResponse>> getAllUsers() {
