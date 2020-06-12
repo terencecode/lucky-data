@@ -50,7 +50,7 @@
         </mat-form-field>
 
         <div class="full-width">
-          <mat-checkbox formControlName="acceptTerms" color="primary"><mat-label>J'accepte les termes et conditions</mat-label></mat-checkbox>
+          <mat-checkbox formControlName="acceptTerms" color="primary"><mat-label>J'accepte les <a routerLink="/terms-of-use">termes et conditions</a></mat-label></mat-checkbox>
           <mat-error *ngIf="submitted && this.form.controls.acceptTerms.errors" class="invalid invalidTerms">Veuillez accepter les termes et conditions</mat-error>
         </div>
 

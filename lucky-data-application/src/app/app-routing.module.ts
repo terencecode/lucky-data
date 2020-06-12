@@ -9,15 +9,19 @@ import {DatasetDetailsComponent} from "./component/dataset-details/dataset-detai
 import {DatasetUploadComponent} from "./component/dataset-upload/dataset-upload.component";
 import {AdminUserComponent} from './component/admin-user/admin-user.component';
 import {AdminDatasetComponent} from './component/admin-dataset/admin-dataset.component';
+import {TermsOfUseComponent} from './component/terms-of-use/terms-of-use.component';
+import {PrivacyPolicyComponent} from './component/privacy-policy/privacy-policy.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginFormComponent },
-  { path: 'datasets', component: DatasetListComponent },
-  { path: 'dataset/:datasetId', component: DatasetDetailsComponent},
   { path: 'register', component: RegisterFormComponent },
   { path: 'forgotten-password', component: ForgotPasswordComponent },
+  { path: 'terms-of-use', component: TermsOfUseComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'datasets', component: DatasetListComponent },
+  { path: 'dataset/:datasetId', component: DatasetDetailsComponent},
   { path: 'profile', component: ProfileComponent },
   { path: 'upload/dataset', component: DatasetUploadComponent},
   { path: 'admin/users', component: AdminUserComponent},

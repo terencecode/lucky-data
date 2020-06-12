@@ -23,4 +23,8 @@ export class AdminService {
     return this.http.post(environment.baseUrl + '/user/editRole', {addRole, role, email});
   }
 
+  public deleteDataset(datasetId: string){
+    return this.http.delete(environment.baseUrl + '/dataset/delete/' + datasetId);
+  }
+
 }

@@ -1,55 +1,47 @@
 <div class="container">
-  <div class="mat-headline">Gestion des utilisateurs</div>
+  <div class="mat-headline">Gestion des datasets</div>
   <div *ngIf="updateError" class="updateError">{{errorMess}}</div>
   <div *ngIf="updateSuccess" class="updateSuccess">{{successMess}}</div>
 
   <div class="table">
 
     <mat-form-field>
-      <mat-label>Rechercher un utilisateur</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Alexandre">
+      <mat-label>Rechercher un dataset</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Banque de France">
     </mat-form-field>
 
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
 
-        <ng-container matColumnDef="firstName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-          <td mat-cell *matCellDef="let user of users">{{user.firstName}}</td>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Titre</th>
+          <td mat-cell *matCellDef="let dataset of datasets" class="titre">{{dataset.title}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="lastName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</th>
-          <td mat-cell *matCellDef="let user of users">{{user.lastName}}</td>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let dataset of datasets" class="description">{{dataset.description}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-          <td mat-cell *matCellDef="let user of users">{{user.email}}</td>
+        <ng-container matColumnDef="source">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
+          <td mat-cell *matCellDef="let dataset of datasets">{{dataset.source}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="department">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Departement</th>
-          <td mat-cell *matCellDef="let user of users">{{user.department}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="role" class="bigColumn">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
-          <td mat-cell *matCellDef="let user of users">Utilisateur
-            <span *ngIf="isExpertRole(user.role)">, Expert-data</span>
-            <span *ngIf="isAdminRole(user.role)">, Administrateur</span>
-          </td>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+          <td mat-cell *matCellDef="let dataset of datasets">{{dataset?.date|date}}</td>
         </ng-container>
 
         <ng-container matColumnDef="manage" class="bigColumn">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Gérer</th>
-          <td mat-cell *matCellDef="let user of users">
+          <td mat-cell *matCellDef="let dataset of datasets">
             <div class="buttons">
-              <button mat-mini-fab color="warn" aria-label="Supprimer cet utilisateur" [matMenuTriggerFor]="matRemove"
-                      matTooltip="Supprimer cet utilisateur"><mat-icon>delete</mat-icon></button>
+              <button mat-mini-fab color="warn" aria-label="Supprimer ce dataset" [matMenuTriggerFor]="matRemove"
+                      matTooltip="Supprimer ce dataset"><mat-icon>delete</mat-icon></button>
               <mat-menu #matRemove="matMenu" xPosition="after">
-                <p class="RemoveConfirmation">Voulez-vous vraiment supprimer cet utilisateur?</p>
-                <button mat-menu-item (click)="deleteUser(user)">
+                <p class="RemoveConfirmation">Voulez-vous vraiment supprimer ce dataset?</p>
+                <button mat-menu-item (click)="deleteDataset(dataset)">
                   <mat-icon>check_circle</mat-icon>
                   <span>Oui</span>
                 </button>
@@ -59,36 +51,17 @@
                 </button>
               </mat-menu>
 
-              <button mat-mini-fab color="primary" aria-label="Modifier ses rôles" matTooltip="Modifier ses rôles"
-                      [matMenuTriggerFor]="matEditRole" class="editRole">
-                <mat-icon>settings</mat-icon>
-              </button>
-              <mat-menu #matEditRole="matMenu" xPosition="before">
-
-                <button mat-menu-item *ngIf="!isExpertRole(user.role)" (click)="EditRole(true, 'ROLE_DATA_EXPERT', user)">
-                  <mat-icon>add_circle</mat-icon>
-                  <span>Passer expert data</span>
+              <a [routerLink]="['/dataset/', dataset?.id]">
+                <button mat-mini-fab color="primary" aria-label="Consulter ce dataset" matTooltip="Consulter ce dataset" class="editRole">
+                  <mat-icon>remove_red_eye</mat-icon>
                 </button>
-                <button mat-menu-item *ngIf="isExpertRole(user.role)" (click)="EditRole(false, 'ROLE_DATA_EXPERT', user)">
-                  <mat-icon>remove_circle</mat-icon>
-                  <span>Supprimer rôle expert data</span>
-                </button>
-
-                <button mat-menu-item *ngIf="!isAdminRole(user.role)" (click)="EditRole(true, 'ROLE_ADMIN', user)">
-                  <mat-icon>add_circle</mat-icon>
-                  <span>Passer administrateur</span>
-                </button>
-                <button mat-menu-item *ngIf="isAdminRole(user.role)" (click)="EditRole(false, 'ROLE_ADMIN', user)">
-                  <mat-icon>remove_circle</mat-icon>
-                  <span>Supprimer rôle administrateur</span>
-                </button>
-              </mat-menu>
+              </a>
             </div>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let user of users; columns: displayedColumns;">
+        <tr mat-row *matRowDef="let dataset of datasets; columns: displayedColumns;">
         </tr>
       </table>
 

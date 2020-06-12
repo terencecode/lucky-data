@@ -83,7 +83,7 @@ export class AuthService {
     return this.http.get(environment.baseUrl + '/auth/resetPasswordEmail/' + email);
   }
 
-  private setUserData(){
+  public setUserData(){
     this.userService.getUserInfo().subscribe(user => {
       localStorage.setItem('roles', user.role.toString());
       localStorage.setItem('firstName', user.firstName);

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../../model/user';
 import {UserService} from '../../service/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +26,7 @@ export class ProfileComponent implements OnInit {
   passwordRegex = /^((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])|(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&\\/=?_.,:;\\\\-])|(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%&\\/=?_.,:;\\\\-])|(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&\\/=?_.,:;\\\\-])).{12,30}$/;
   oldpasswordRegex = /^(?=\\D*\\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/;
 
-  constructor(private fb: FormBuilder, private userService: UserService){
+  constructor(private fb: FormBuilder, private userService: UserService, private authService: AuthService){
 
     this.form = this.fb.group({
       firstName: ['', Validators.compose([
@@ -127,6 +128,7 @@ export class ProfileComponent implements OnInit {
           () => {
             this.updateSuccess = true;
             this.successMess = 'Vos informations ont bien été modifiées';
+            this.authService.setUserData();
             this.getUserInfo();
           },
           (error) => {

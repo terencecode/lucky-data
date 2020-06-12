@@ -4,7 +4,7 @@ import {Dataset} from "../../model/dataset";
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import {User} from '../../model/user';
+import {AdminService} from '../../service/admin.service';
 
 @Component({
   selector: 'app-admin-dataset',
@@ -14,7 +14,7 @@ import {User} from '../../model/user';
 export class AdminDatasetComponent implements OnInit {
 
   datasets: Dataset[];
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'department', 'role', 'manage'];
+  displayedColumns: string[] = ['title', 'description', 'source', 'date', 'manage'];
   dataSource: MatTableDataSource<Dataset>;
   updateSuccess = false;
   successMess = '';
@@ -24,7 +24,7 @@ export class AdminDatasetComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private datasetService: DatasetService) { }
+  constructor(private datasetService: DatasetService, private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.datasetService.getDatasets().subscribe(datasets => {
@@ -41,6 +41,21 @@ export class AdminDatasetComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  deleteDataset(dataset) {
+    this.adminService.deleteDataset(dataset.id)
+      .subscribe(
+        () => {
+          this.updateSuccess = true;
+          this.successMess = 'Dataset supprimé';
+          this.ngOnInit();
+        },
+        (error) => {
+          console.log(error);
+          this.updateError = true;
+          this.errorMess = 'Une erreur interne est survenue, veuillez réessayer';
+        });
   }
 
 }

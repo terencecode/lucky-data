@@ -23,6 +23,8 @@ import { DatasetUploadComponent } from './component/dataset-upload/dataset-uploa
 import { AdminUserComponent } from './component/admin-user/admin-user.component';
 import { FileControlValueAccessor } from './accessor/file-control-value-accessor';
 import { AdminDatasetComponent } from './component/admin-dataset/admin-dataset.component';
+import { TermsOfUseComponent } from './component/terms-of-use/terms-of-use.component';
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { AdminDatasetComponent } from './component/admin-dataset/admin-dataset.c
     DatasetUploadComponent,
     AdminUserComponent,
     FileControlValueAccessor,
-    AdminDatasetComponent
+    AdminDatasetComponent,
+    TermsOfUseComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     BrowserModule,
