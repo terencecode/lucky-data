@@ -30,7 +30,7 @@ public class DatasetFile {
     @Basic(fetch = FetchType.LAZY)
     private Blob data;
 
-    @OneToMany(mappedBy = "datasetFile", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "datasetFile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DatasetFileHistory> datasetFileHistories;
 
     public DatasetFile(){}

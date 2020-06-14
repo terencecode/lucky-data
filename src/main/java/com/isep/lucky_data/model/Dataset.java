@@ -70,7 +70,7 @@ public class Dataset {
     @NotNull
     private Long downloads = 0L;
 
-    @OneToMany(mappedBy = "dataset", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "dataset", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<DatasetConsultation> datasetConsultations;
 
     public Dataset() {}
