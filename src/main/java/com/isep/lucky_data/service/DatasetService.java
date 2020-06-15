@@ -218,4 +218,20 @@ public class DatasetService {
         }
         return datasets;
     }
+
+    public void deleteDataset(Long idDataset){
+        Dataset dataset = datasetRepository.findById(idDataset).orElseThrow(
+                () -> new DatasetNotFoundException("The Dataset with id " + idDataset + " does not exists !"));
+        Long datasedId = dataset.getId();
+        DatasetApi datasedApi = dataset.getDatasetApi();
+        DatasetFile datasetFile = dataset.getDatasetFile();
+
+        if (datasedApi != null){
+            datasetApiRepository.deleteById(datasedApi.getId());
+        }
+        datasetRepository.deleteById(datasedId);
+        datasetConsultationRepository.deleteConsultation(datasedId);
+        datasetFileRepository.deleteFile(datasetFile.getId());
+
+    }
 }

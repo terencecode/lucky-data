@@ -84,4 +84,8 @@ public class DatasetApi {
         this.downloadedAt = downloadedAt;
         this.validity = validity;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

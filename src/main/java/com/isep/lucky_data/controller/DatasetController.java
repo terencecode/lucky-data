@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.net.ssl.SSLException;
+import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
@@ -115,5 +116,14 @@ public class DatasetController {
         DatasetToDatasetResponseConverter converter = new DatasetToDatasetResponseConverter();
         Collection<DatasetResponse> responses = converter.createFromEntities(datasets);
         return ResponseEntity.ok(responses);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @Transactional
+    @DeleteMapping("/delete/{datasedId}")
+    @ApiOperation(value = "Delete dataset" , authorizations = {@Authorization(value = "JWT")})
+    public ResponseEntity<?> deleteDataset(@PathVariable("datasedId") Long datasedId) {
+        datasetService.deleteDataset(datasedId);
+        return ResponseEntity.ok().build();
     }
 }

@@ -20,4 +20,6 @@ public interface DatasetRepository extends JpaRepository<Dataset, Long> {
     List<Dataset> findAllByOrderByDownloadsDesc();
 
     Optional<Dataset> findById(Long datasetId);
+
+    void deleteById(Long datasetId);
 }

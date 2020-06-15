@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DatasetApiRepository extends JpaRepository<DatasetApi, Long> {
+    void deleteById(Long datasetApiId);
 }
