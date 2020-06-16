@@ -14,6 +14,7 @@ import {PrivacyPolicyComponent} from './component/privacy-policy/privacy-policy.
 import {ModelListComponent} from "./component/model-list/model-list.component";
 import {ModelDetailsComponent} from "./component/model-details/model-details.component";
 import {ModelUploadComponent} from "./component/model-upload/model-upload.component";
+import {IsAdminGuard} from "./guard/is-admin.guard";
 
 
 const routes: Routes = [
@@ -30,8 +31,12 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'upload/dataset', component: DatasetUploadComponent},
   { path: 'upload/model', component: ModelUploadComponent},
-  { path: 'admin/users', component: AdminUserComponent},
-  { path: 'admin/datasets', component: AdminDatasetComponent}
+  { path: 'admin',
+    children: [
+      { path: 'users', component: AdminUserComponent},
+      { path: 'datasets', component: AdminDatasetComponent}
+    ],
+    canActivate: [IsAdminGuard]}
   ]
 ;
 
