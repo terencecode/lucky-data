@@ -1,0 +1,26 @@
+@import '~@angular/material/theming'
+
+.model-tile
+  height: 200px
+  width: 350px
+  cursor: pointer
+  display: flex
+  flex-direction: column
+  @include mat-elevation-transition
+  @include mat-elevation(2)
+
+
+  &:focus, &:hover
+    @include mat-elevation(8)
+
+  .content
+    flex: 1
+    padding-top: 12px
+
+  .tile-footer
+    display: flex
+    justify-content: space-between
+    margin: 0
+
+.model-tile:focus
+  outline: none

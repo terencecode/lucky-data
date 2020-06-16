@@ -1,0 +1,10 @@
+<mat-card [routerLink]="['/model/', model?.id]" class="model-tile">
+  <mat-card-title class="title">{{ model?.title }}</mat-card-title>
+  <mat-card-content class="content">
+    <p>{{ model?.description }}</p>
+  </mat-card-content>
+  <mat-card-footer class="tile-footer">
+    <div class=".mat-small">Source : {{ model?.source }}</div>
+    <div class=".mat-small">{{ model.tag ? "Tag " + model.tag : "" }}</div>
+  </mat-card-footer>
+</mat-card>
