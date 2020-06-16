@@ -25,12 +25,17 @@ import { FileControlValueAccessor } from './accessor/file-control-value-accessor
 import { AdminDatasetComponent } from './component/admin-dataset/admin-dataset.component';
 import { TermsOfUseComponent } from './component/terms-of-use/terms-of-use.component';
 import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component';
+import {ModelListComponent} from "./component/model-list/model-list.component";
+import { ModelTileComponent } from './component/model-tile/model-tile.component';
+import { ModelDetailsComponent } from './component/model-details/model-details.component';
+import { ModelUploadComponent } from './component/model-upload/model-upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
     DatasetListComponent,
+    ModelListComponent,
     RegisterFormComponent,
     ForgotPasswordComponent,
     FooterComponent,
@@ -43,7 +48,10 @@ import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-polic
     FileControlValueAccessor,
     AdminDatasetComponent,
     TermsOfUseComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    ModelTileComponent,
+    ModelDetailsComponent,
+    ModelUploadComponent
   ],
   imports: [
     BrowserModule,

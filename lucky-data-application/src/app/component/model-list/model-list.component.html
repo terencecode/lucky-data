@@ -1,0 +1,28 @@
+<mat-sidenav-container autosize class="page">
+  <mat-sidenav opened mode="side" class="sidenav">
+    <h3 class="number-of-models"></h3>
+    <h3>Tri des modèles :</h3>
+    <mat-button-toggle-group class="toggleGroup" (change)="sort($event)">
+      <div class="sortGroup">
+        <mat-button-toggle value="popular">+ Populaire</mat-button-toggle>
+        <mat-button-toggle value="unpopular">- Populaire</mat-button-toggle>
+      </div>
+      <div class="sortGroup">
+        <mat-button-toggle value="latest" [checked]="true">+ Récent</mat-button-toggle>
+        <mat-button-toggle value="oldest">- Récent</mat-button-toggle>
+      </div>
+      <div class="sortGroup">
+        <mat-button-toggle value="alphabetical">De A à Z</mat-button-toggle>
+        <mat-button-toggle value="not-alphabetical">De Z à A</mat-button-toggle>
+      </div>
+    </mat-button-toggle-group>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <div class="model-list">
+      <div *ngFor="let model of models" class="model-tile-container">
+        <app-model-tile [model]="model"></app-model-tile>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

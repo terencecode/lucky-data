@@ -5,13 +5,13 @@
 
   <a *ngIf="isLoggedIn()" routerLink="/datasets" mat-button>Datasets</a>
 
-  <a *ngIf="isLoggedIn()" routerLink="/" mat-button>Modèles</a>
+  <a *ngIf="isLoggedIn()" routerLink="/models" mat-button>Modèles</a>
 
   <a *ngIf="isLoggedIn() && (isAdmin()||isDataExpert())" [matMenuTriggerFor]="matMenuSubmit" mat-button>Soumettre</a>
 
   <mat-menu #matMenuSubmit="matMenu" xPosition="before">
     <a routerLink="/upload/dataset" mat-menu-item>Dataset</a>
-    <a routerLink="" mat-menu-item>Modèle</a>
+    <a routerLink="/upload/model" mat-menu-item>Modèle</a>
   </mat-menu>
 
   <a *ngIf="isAdmin()" [matMenuTriggerFor]="matAdminSubmit" mat-button>Administration</a>
