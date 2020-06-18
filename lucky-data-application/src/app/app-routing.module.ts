@@ -15,6 +15,7 @@ import {ModelListComponent} from "./component/model-list/model-list.component";
 import {ModelDetailsComponent} from "./component/model-details/model-details.component";
 import {ModelUploadComponent} from "./component/model-upload/model-upload.component";
 import {IsAdminGuard} from "./guard/is-admin.guard";
+import {AdminModelComponent} from './component/admin-model/admin-model.component';
 
 
 const routes: Routes = [
@@ -34,7 +35,8 @@ const routes: Routes = [
   { path: 'admin',
     children: [
       { path: 'users', component: AdminUserComponent},
-      { path: 'datasets', component: AdminDatasetComponent}
+      { path: 'datasets', component: AdminDatasetComponent},
+      { path: 'models', component: AdminModelComponent}
     ],
     canActivate: [IsAdminGuard]}
   ]

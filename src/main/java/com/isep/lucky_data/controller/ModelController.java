@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.net.ssl.SSLException;
+import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
@@ -99,5 +100,14 @@ public class ModelController {
         ModelToModelResponseConverter converter = new ModelToModelResponseConverter();
         Collection<ModelResponse> responses = converter.createFromEntities(models);
         return ResponseEntity.ok(responses);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @Transactional
+    @DeleteMapping("/delete/{modelId}")
+    @ApiOperation(value = "Delete model" , authorizations = {@Authorization(value = "JWT")})
+    public ResponseEntity<?> deleteModel(@PathVariable("modelId") Long modelId) {
+        modelService.deleteModel(modelId);
+        return ResponseEntity.ok().build();
     }
 }

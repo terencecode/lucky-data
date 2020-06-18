@@ -29,6 +29,7 @@ import {ModelListComponent} from "./component/model-list/model-list.component";
 import { ModelTileComponent } from './component/model-tile/model-tile.component';
 import { ModelDetailsComponent } from './component/model-details/model-details.component';
 import { ModelUploadComponent } from './component/model-upload/model-upload.component';
+import { AdminModelComponent } from './component/admin-model/admin-model.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ModelUploadComponent } from './component/model-upload/model-upload.comp
     PrivacyPolicyComponent,
     ModelTileComponent,
     ModelDetailsComponent,
-    ModelUploadComponent
+    ModelUploadComponent,
+    AdminModelComponent
   ],
   imports: [
     BrowserModule,

@@ -27,4 +27,8 @@ export class AdminService {
     return this.http.delete(environment.baseUrl + '/dataset/delete/' + datasetId);
   }
 
+  public deleteModel(modelId: bigint){
+    return this.http.delete(environment.baseUrl + '/model/delete/' + modelId);
+  }
+
 }

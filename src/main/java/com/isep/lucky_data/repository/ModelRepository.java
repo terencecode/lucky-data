@@ -19,4 +19,6 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
     List<Model> findAllByOrderByDownloadsDesc();
 
     Optional<Model> findById(Long modelId);
+
+    void deleteById(Long modelId);
 }

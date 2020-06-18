@@ -129,4 +129,20 @@ public class ModelService {
         }
         return models;
     }
+
+    public void deleteModel(Long idModel){
+        Model model = modelRepository.findById(idModel).orElseThrow(
+                () -> new ModelNotFoundException("The Model with id " + idModel + " does not exists !"));
+        Long modelId = model.getId();
+        //ModelApi datasedApi = model.getDatasetApi();
+        ModelFile modelFile = model.getModelFile();
+
+        //if (datasedApi != null){
+            //datasetApiRepository.deleteById(datasedApi.getId());
+        //}
+        modelRepository.deleteById(modelId);
+        modelConsultationRepository.deleteConsultation(modelId);
+        modelFileRepository.deleteFile(modelFile.getId());
+
+    }
 }
