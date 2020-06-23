@@ -31,4 +31,7 @@ export class AdminService {
     return this.http.delete(environment.baseUrl + '/model/delete/' + modelId);
   }
 
+  public refreshDataset(datasetId: bigint, token?: string){
+    return this.http.post(environment.baseUrl + '/dataset/refresh/api/' + datasetId, token ? {token: token} : {});
+  }
 }

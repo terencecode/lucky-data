@@ -19,7 +19,7 @@ public class DatasetToDatasetResponseConverter extends OneWayConverter<DatasetRe
             Long date = dataset.getDate().getTime();
             Long downloads = dataset.getDownloads();
 
-            return new DatasetResponse(id, title, description, source, tag, date, downloads);
+            return new DatasetResponse(id, title, description, source, tag, date, downloads, dataset.getDatasetApi() != null);
         });
     }
 }

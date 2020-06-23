@@ -1,5 +1,6 @@
 package com.isep.lucky_data.repository;
 
+import com.isep.lucky_data.model.Dataset;
 import com.isep.lucky_data.model.DatasetConsultation;
 import com.isep.lucky_data.model.DatasetConsultationKey;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,8 +19,8 @@ public interface DatasetConsultationRepository extends JpaRepository<DatasetCons
     @Override
     Optional<DatasetConsultation> findById(DatasetConsultationKey datasetConsultationKey);
 
-    @Transactional
-    @Modifying
-    @Query(value = "DELETE FROM dataset_consultation u WHERE u.dataset_id = ?1", nativeQuery = true)
-    void deleteConsultation(Long datasetConsultationId);
+    @Override
+    void delete(DatasetConsultation datasetConsultation);
+
+    void deleteAllByDataset(Dataset dataset);
 }

@@ -14,4 +14,5 @@ export class Dataset {
   contentType: string;
   size: bigint;
   downloads: bigint;
+  api: boolean;
 }

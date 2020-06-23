@@ -39,7 +39,7 @@ public class DatasetToDatasetDetailsResponseConverter extends OneWayConverter<Da
             }*/
             Long downloads = dataset.getDownloads();
 
-            return new DatasetDetailsResponse(id, title, description, source, uploadedAt, date, startDate, endDate, latitude, longitude, tag, downloads);
+            return new DatasetDetailsResponse(id, title, description, source, uploadedAt, date, startDate, endDate, latitude, longitude, tag, downloads, dataset.getDatasetApi() != null);
         });
     }
 }

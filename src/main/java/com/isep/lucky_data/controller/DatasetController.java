@@ -7,6 +7,7 @@ import com.isep.lucky_data.converter.DatasetToDatasetResponseConverter;
 import com.isep.lucky_data.model.ApplicationUser;
 import com.isep.lucky_data.model.Dataset;
 import com.isep.lucky_data.model.DatasetFile;
+import com.isep.lucky_data.payload.request.DatasetAPIFileRefreshRequest;
 import com.isep.lucky_data.payload.request.DatasetAPIRequest;
 import com.isep.lucky_data.payload.request.DatasetRequest;
 import com.isep.lucky_data.payload.response.DatasetDetailsResponse;
@@ -74,6 +75,14 @@ public class DatasetController {
                 .path("/download/")
                 .path(dataset.getId().toString()).build().toUri();*/
 
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @PostMapping("/refresh/api/{datasetId}")
+    @ApiOperation(value = "Upload a dataset by API", authorizations = {@Authorization(value = "JWT")})
+    public ResponseEntity refreshDatasetAPIFile(@PathVariable Long datasetId, @RequestBody DatasetAPIFileRefreshRequest datasetAPIFileRefreshRequest) throws SSLException, MimeTypeException {
+        datasetService.refreshDatasetFile(datasetId, datasetAPIFileRefreshRequest);
         return ResponseEntity.ok().build();
     }
 

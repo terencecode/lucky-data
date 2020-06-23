@@ -56,6 +56,9 @@
                   <mat-icon>remove_red_eye</mat-icon>
                 </button>
               </a>
+
+              <button *ngIf="dataset?.api === true" class="refresh-button" mat-mini-fab color="accent" aria-label="Rafraîchir ce dataset"
+                      (click)="openDialog(dataset)" matTooltip="Rafraîchir ce dataset"><mat-icon>refresh</mat-icon></button>
             </div>
           </td>
         </ng-container>

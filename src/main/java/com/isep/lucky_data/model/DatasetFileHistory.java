@@ -23,8 +23,16 @@ public class DatasetFileHistory {
     @Basic(fetch = FetchType.LAZY)
     private Blob data;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("dataset_file_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "dataset_file_id", foreignKey = @ForeignKey(name = "dataset_file_foreign_key"))
     private DatasetFile datasetFile;
+
+    public DatasetFileHistory() {
+    }
+
+    public DatasetFileHistory(DatasetFile datasetFile, Date date) {
+        this.date = date;
+        this.data = datasetFile.getData();
+        this.datasetFile = datasetFile;
+    }
 }

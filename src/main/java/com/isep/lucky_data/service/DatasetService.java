@@ -6,13 +6,11 @@ import com.isep.lucky_data.exception.DatasetNotFoundException;
 import com.isep.lucky_data.exception.FileNotFoundException;
 import com.isep.lucky_data.exception.FileStorageException;
 import com.isep.lucky_data.model.*;
+import com.isep.lucky_data.payload.request.DatasetAPIFileRefreshRequest;
 import com.isep.lucky_data.payload.request.DatasetAPIInfo;
 import com.isep.lucky_data.payload.request.DatasetAPIRequest;
 import com.isep.lucky_data.payload.request.DatasetRequest;
-import com.isep.lucky_data.repository.DatasetApiRepository;
-import com.isep.lucky_data.repository.DatasetConsultationRepository;
-import com.isep.lucky_data.repository.DatasetFileRepository;
-import com.isep.lucky_data.repository.DatasetRepository;
+import com.isep.lucky_data.repository.*;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -37,6 +35,9 @@ import reactor.netty.tcp.TcpClient;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,6 +48,9 @@ public class DatasetService {
 
     @Autowired
     private DatasetFileRepository datasetFileRepository;
+
+    @Autowired
+    DatasetFileHistoryRepository datasetFileHistoryRepository;
 
     @Autowired
     private DatasetApiRepository datasetApiRepository;
@@ -90,6 +94,23 @@ public class DatasetService {
         createDatasetConsultation(user, dataset);
 
         return dataset;
+    }
+
+    public void refreshDatasetFile(Long datasetId, DatasetAPIFileRefreshRequest datasetAPIFileRefreshRequest) throws SSLException {
+        Dataset dataset = datasetRepository.findById(datasetId).orElseThrow(
+                () -> new DatasetNotFoundException("The Dataset with id " + datasetId + " does not exists !"));
+        ByteArrayResource response = refreshApiCall(dataset.getDatasetApi(), datasetAPIFileRefreshRequest.getToken());
+        DatasetApi datasetApi = dataset.getDatasetApi();
+        datasetApi.setTokenValue(datasetAPIFileRefreshRequest.getToken() != null ? datasetAPIFileRefreshRequest.getToken() : datasetApi.getTokenValue());
+        datasetApiRepository.save(datasetApi);
+
+        DatasetFile datasetFile = dataset.getDatasetFile();
+        DatasetFileHistory datasetFileHistory = new DatasetFileHistory(datasetFile, dataset.getUploadedAt());
+        datasetFileHistoryRepository.save(datasetFileHistory);
+        dataset.setUploadedAt(new Date());
+        datasetRepository.save(dataset);
+        datasetFile.setData(BlobProxy.generateProxy(response.getByteArray()));
+        datasetFileRepository.save(datasetFile);
     }
 
     private DatasetFile saveDatasetFile(MultipartFile file) {
@@ -146,6 +167,43 @@ public class DatasetService {
 
         requestSpec.header("Authorization", datasetAPIInfo.getTokenName() + " " + datasetAPIInfo.getTokenValue());
         requestSpec.accept(MediaType.parseMediaType(datasetAPIInfo.getContentType()));
+
+        return requestSpec.retrieve().bodyToMono(ByteArrayResource.class).block();
+    }
+
+    private ByteArrayResource refreshApiCall(DatasetApi datasetApi, String token) throws SSLException {
+        String url = datasetApi.getUrl();
+        SslContext sslContext = SslContextBuilder
+                .forClient()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                .build();
+        TcpClient tcpClient = TcpClient.create().secure(sslProviderBuilder -> sslProviderBuilder.sslContext(sslContext));
+        HttpClient httpClient = HttpClient.from(tcpClient);
+        WebClient client = WebClient.builder().clientConnector(new ReactorClientHttpConnector(httpClient)).baseUrl(url).build();
+
+        WebClient.RequestBodyUriSpec requestSpec = client.method(HttpMethod.resolve(datasetApi.getMethod()));
+        if (datasetApi.getMethod().equals(HttpMethod.POST)) {
+            if (datasetApi.getBody() != null) {
+                MultiValueMap<String, Object> body = new LinkedMultiValueMap();
+                datasetApi.getBody().entrySet().stream().forEach(entry -> body.add(entry.getKey(),entry.getValue()));
+                requestSpec.body(BodyInserters.fromMultipartData(body));
+            } else if (datasetApi.getFormData() != null) {
+                MultiValueMap<String, String> formData = new LinkedMultiValueMap();
+                datasetApi.getFormData().entrySet().stream().forEach(entry -> formData.add(entry.getKey(), entry.getValue().toString()));
+                requestSpec.body(BodyInserters.fromFormData(formData));
+            }
+        } else if (datasetApi.getMethod().equals(HttpMethod.GET)) {
+            if(datasetApi.getQueryParams() != null) {
+                MultiValueMap<String, String> queryParams = new LinkedMultiValueMap();
+                datasetApi.getQueryParams().entrySet().stream().forEach(entry -> queryParams.add(entry.getKey(), entry.getValue().toString()));
+                requestSpec.uri(uriBuilder ->
+                        datasetApi.getPathParams() != null ? uriBuilder.queryParams(queryParams).build(datasetApi.getPathParams()) : uriBuilder.queryParams(queryParams).build()
+                );
+            }
+        }
+
+        requestSpec.header("Authorization", datasetApi.getTokenName() + " " + (token != null ? token : datasetApi.getTokenValue()));
+        requestSpec.accept(MediaType.parseMediaType(datasetApi.getContentType()));
 
         return requestSpec.retrieve().bodyToMono(ByteArrayResource.class).block();
     }
@@ -219,19 +277,17 @@ public class DatasetService {
         return datasets;
     }
 
-    public void deleteDataset(Long idDataset){
-        Dataset dataset = datasetRepository.findById(idDataset).orElseThrow(
-                () -> new DatasetNotFoundException("The Dataset with id " + idDataset + " does not exists !"));
-        Long datasedId = dataset.getId();
-        DatasetApi datasedApi = dataset.getDatasetApi();
+    public void deleteDataset(Long datasetId){
+        Dataset dataset = datasetRepository.findById(datasetId).orElseThrow(
+                () -> new DatasetNotFoundException("The Dataset with id " + datasetId + " does not exists !"));
+        DatasetApi datasetApi = dataset.getDatasetApi();
         DatasetFile datasetFile = dataset.getDatasetFile();
 
-        if (datasedApi != null){
-            datasetApiRepository.deleteById(datasedApi.getId());
+        if (datasetApi != null){
+            datasetApiRepository.deleteById(datasetApi.getId());
         }
-        datasetRepository.deleteById(datasedId);
-        datasetConsultationRepository.deleteConsultation(datasedId);
-        datasetFileRepository.deleteFile(datasetFile.getId());
-
+        datasetRepository.delete(dataset);
+        datasetConsultationRepository.deleteAllByDataset(dataset);
+        datasetFileRepository.delete(datasetFile);
     }
 }

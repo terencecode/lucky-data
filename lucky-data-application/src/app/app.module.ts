@@ -30,6 +30,7 @@ import { ModelTileComponent } from './component/model-tile/model-tile.component'
 import { ModelDetailsComponent } from './component/model-details/model-details.component';
 import { ModelUploadComponent } from './component/model-upload/model-upload.component';
 import { AdminModelComponent } from './component/admin-model/admin-model.component';
+import { RefreshApiComponent } from './component/refresh-api/refresh-api.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { AdminModelComponent } from './component/admin-model/admin-model.compone
     ModelTileComponent,
     ModelDetailsComponent,
     ModelUploadComponent,
-    AdminModelComponent
+    AdminModelComponent,
+    RefreshApiComponent
   ],
   imports: [
     BrowserModule,

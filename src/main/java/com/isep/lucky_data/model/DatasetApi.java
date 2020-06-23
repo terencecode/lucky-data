@@ -88,4 +88,92 @@ public class DatasetApi {
     public Long getId() {
         return id;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getTokenName() {
+        return tokenName;
+    }
+
+    public void setTokenName(String tokenName) {
+        this.tokenName = tokenName;
+    }
+
+    public String getTokenValue() {
+        return tokenValue;
+    }
+
+    public void setTokenValue(String tokenValue) {
+        this.tokenValue = tokenValue;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public Map<String, Object> getBody() {
+        return body;
+    }
+
+    public void setBody(Map<String, Object> body) {
+        this.body = body;
+    }
+
+    public Map<String, Object> getFormData() {
+        return formData;
+    }
+
+    public void setFormData(Map<String, Object> formData) {
+        this.formData = formData;
+    }
+
+    public Map<String, Object> getQueryParams() {
+        return queryParams;
+    }
+
+    public void setQueryParams(Map<String, Object> queryParams) {
+        this.queryParams = queryParams;
+    }
+
+    public Map<String, Object> getPathParams() {
+        return pathParams;
+    }
+
+    public void setPathParams(Map<String, Object> pathParams) {
+        this.pathParams = pathParams;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public Date getDownloadedAt() {
+        return downloadedAt;
+    }
+
+    public void setDownloadedAt(Date downloadedAt) {
+        this.downloadedAt = downloadedAt;
+    }
+
+    public Long getValidity() {
+        return validity;
+    }
+
+    public void setValidity(Long validity) {
+        this.validity = validity;
+    }
 }

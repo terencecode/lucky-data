@@ -72,4 +72,12 @@ public class DatasetFile {
     public void setData(Blob data) {
         this.data = data;
     }
+
+    public List<DatasetFileHistory> getDatasetFileHistories() {
+        return datasetFileHistories;
+    }
+
+    public void setDatasetFileHistories(List<DatasetFileHistory> datasetFileHistories) {
+        this.datasetFileHistories = datasetFileHistories;
+    }
 }

@@ -30,7 +30,10 @@ public class DatasetResponse {
     @ApiModelProperty(value = "The number of downloads of the dataset file", example = "321", required = true, position = 6)
     private Long downloads;
 
-    public DatasetResponse(Long id, String title, String description, String source, String tag, Long date, Long downloads) {
+    @ApiModelProperty(value = "Wether or not the dataset was uploaded by api", example = "true", required = true, position = 7)
+    private boolean api;
+
+    public DatasetResponse(Long id, String title, String description, String source, String tag, Long date, Long downloads, boolean api) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -38,6 +41,7 @@ public class DatasetResponse {
         this.tag = tag;
         this.date = date;
         this.downloads = downloads;
+        this.api = api;
     }
 
     public Long getId() {
@@ -94,5 +98,13 @@ public class DatasetResponse {
 
     public void setDownloads(Long downloads) {
         this.downloads = downloads;
+    }
+
+    public boolean isApi() {
+        return api;
+    }
+
+    public void setApi(boolean api) {
+        this.api = api;
     }
 }

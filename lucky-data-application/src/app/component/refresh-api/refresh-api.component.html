@@ -1,0 +1,13 @@
+<div mat-dialog-content>
+  <p>Quel est le nouveau token?</p>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Nouveau Token</mat-label>
+      <input matInput placeholder="8611d78e-712e-311f-b98f-c2ad845f17e4" name="token" formControlName="token">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button type="button" (click)="closeDialog()">Annuler</button>
+  <button mat-button [mat-dialog-close]="form.get('token').value" cdkFocusInitial>Ok</button>
+</div>
