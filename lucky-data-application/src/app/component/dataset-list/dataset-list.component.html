@@ -18,11 +18,12 @@
     </mat-button-toggle-group>
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-content">
-    <div class="dataset-list">
-      <div *ngFor="let dataset of datasets" class="dataset-tile-container">
+    <mat-grid-list cols="3" rowHeight="300px" class="dataset-list">
+      <mat-grid-tile *ngFor="let dataset of datasets" [colspan]="1"
+           [rowspan]="1" class="dataset-tile-container">
         <app-dataset-tile [dataset]="dataset"></app-dataset-tile>
-      </div>
-    </div>
+      </mat-grid-tile>
+    </mat-grid-list>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

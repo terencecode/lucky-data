@@ -13,7 +13,6 @@ export class ModelUploadComponent implements OnInit {
   formGroup: FormGroup;
   formArray: FormArray;
   file: File;
-  allowedExtensions = ['java', 'c', 'cpp', 'py', 'onnx', 'pickle', 'zip'];
 
   constructor(private fb: FormBuilder, private modelService: ModelService) {
     this.formArray = this.fb.array([
@@ -21,7 +20,7 @@ export class ModelUploadComponent implements OnInit {
         title: ['', [Validators.required]],
         description: ['', [Validators.required, Validators.max(5000)]],
         source: ['', [Validators.required]],
-        file: [null, [this.fileRequiredValidator, this.fileTypeValidator(this.allowedExtensions)]],
+        file: [null, [this.fileRequiredValidator]]
       }),
       this.fb.group({
         tag: ['']
@@ -41,26 +40,6 @@ export class ModelUploadComponent implements OnInit {
     this.file = files[0];
   }
 
-  fileTypeValidator(types: string[]): ValidatorFn {
-    return (control: FormControl): {[key: string]: any} | null => {
-      const files : File[] = control.value;
-      if(files?.length) {
-        const fileName : string = files[0].name;
-        if (fileName) {
-          const dotSplitName = fileName.split('.');
-          const extension = dotSplitName[dotSplitName.length - 1].toLowerCase();
-          if (!types.includes(extension)) {
-            return {
-              fileTypeValidator: true
-            };
-          }
-          return null;
-        }
-        return null;
-      }
-    }
-  }
-
   fileRequiredValidator(): ValidatorFn {
     return (control: FormControl): {[key: string]: any} | null => {
       const fileName = control.value;
@@ -71,16 +50,6 @@ export class ModelUploadComponent implements OnInit {
         fileRequiredValidator: true
       };
     }
-  }
-
-  acceptedExtensions(): string {
-    let acceptedExtensions = "";
-    for(let index = 0; index < this.allowedExtensions.length; index++) {
-      acceptedExtensions += "." + this.allowedExtensions[index];
-      if(index != this.allowedExtensions.length - 1)
-        acceptedExtensions += ","
-    }
-    return acceptedExtensions;
   }
 
   onSubmit() {

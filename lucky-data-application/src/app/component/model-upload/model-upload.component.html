@@ -25,7 +25,7 @@
               </mat-form-field>
 
               <div class="uploadFile">
-                <input style="display: none" id="input-file-id" type="file" formControlName="file" (change)="fileChanged($event)" required [accept]="acceptedExtensions()">
+                <input style="display: none" id="input-file-id" type="file" formControlName="file" (change)="fileChanged($event)" required>
                 <label for="input-file-id" class="mat-focus-indicator mat-raised-button mat-button-base mat-primary">{{file?.name || 'Sélectionner un fichier' }}</label>
               </div>
 

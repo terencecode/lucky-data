@@ -18,11 +18,12 @@
     </mat-button-toggle-group>
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-content">
-    <div class="model-list">
-      <div *ngFor="let model of models" class="model-tile-container">
+    <mat-grid-list cols="3" rowHeight="300px" class="dataset-list">
+      <mat-grid-tile *ngFor="let model of models" [colspan]="1"
+                     [rowspan]="1" class="model-tile-container">
         <app-model-tile [model]="model"></app-model-tile>
-      </div>
-    </div>
+      </mat-grid-tile>
+    </mat-grid-list>
   </mat-sidenav-content>
 </mat-sidenav-container>
 
